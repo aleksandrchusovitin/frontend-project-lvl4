@@ -1,0 +1,71 @@
+{
+  "name": "@hexlet/code",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server/index.js",
+  "type": "module",
+  "engines": {
+    "node": "14.x"
+  },
+  "scripts": {
+    "test": "echo 'no tests for this project'",
+    "prebuild": "rm -rf dist",
+    "build": "NODE_ENV=production npx webpack --mode production",
+    "start": "node bin/slack.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
+  },
+  "author": "Kirill Mokevnin",
+  "license": "ISC",
+  "homepage": "",
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "core-js": "^3.12.1",
+    "debug": "^4.3.1",
+    "fastify": "^3.15.1",
+    "fastify-formbody": "^5.0.0",
+    "fastify-jwt": "^2.4.0",
+    "fastify-secure-session": "^2.3.1",
+    "fastify-sensible": "^3.1.1",
+    "fastify-socket.io": "^2.0.0",
+    "fastify-static": "^4.0.1",
+    "http-errors": "^1.8.0",
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
+    "pino-pretty": "^4.8.0",
+    "point-of-view": "^4.14.0",
+    "popper.js": "^1.16.1",
+    "pug": "^3.0.2",
+    "regenerator-runtime": "^0.13.7"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
+    "@babel/node": "^7.13.13",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.14.1",
+    "@babel/preset-react": "^7.13.13",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.4",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-functional": "^3.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "mini-css-extract-plugin": "^1.6.0",
+    "node-sass": "^6.0.0",
+    "nodemon": "^2.0.7",
+    "postcss-loader": "^5.2.0",
+    "postcss-preset-env": "^6.7.0",
+    "sass-loader": "^11.1.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.37.0",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
