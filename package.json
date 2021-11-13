@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "0.0.1",
-  "description": "",
+  "description": "Analogue of 'Slack' chat",
   "main": "server/index.js",
   "type": "module",
   "engines": {
@@ -15,11 +15,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
+    "url": "git+https://github.com/aleksandrchusovitin/frontend-project-lvl4.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Aleksandr Chusovitin",
   "license": "ISC",
-  "homepage": "",
+  "homepage": "https://github.com/aleksandrchusovitin/frontend-project-lvl4#readme",
   "dependencies": {
     "bootstrap": "^4.6.0",
     "core-js": "^3.12.1",
