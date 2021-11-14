@@ -1,7 +1,12 @@
 // @ts-check
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
+
+import App from './components/app/App.jsx';
 
 import '../assets/application.scss';
 
@@ -9,23 +14,28 @@ if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-const p = document.createElement('p');
-p.classList.add('card-text');
-p.textContent = 'It works!';
+ReactDOM.render(
+  <App />,
+  document.getElementById('root'),
+);
 
-const h5 = document.createElement('h5');
-h5.classList.add('card-title');
-h5.textContent = 'Project frontend l4 boilerplate';
+// const p = document.createElement('p');
+// p.classList.add('card-text');
+// p.textContent = 'It works!';
 
-const cardBody = document.createElement('div');
-cardBody.classList.add('card-body');
-cardBody.append(h5, p);
+// const h5 = document.createElement('h5');
+// h5.classList.add('card-title');
+// h5.textContent = 'Project frontend l4 boilerplate';
 
-const card = document.createElement('div');
-card.classList.add('card', 'text-center');
-card.append(cardBody);
+// const cardBody = document.createElement('div');
+// cardBody.classList.add('card-body');
+// cardBody.append(h5, p);
 
-const container = document.querySelector('#chat');
-container.append(card);
+// const card = document.createElement('div');
+// card.classList.add('card', 'text-center');
+// card.append(cardBody);
 
-console.log('it works!');
+// const container = document.querySelector('#chat');
+// container.append(card);
+
+// console.log('it works!');
