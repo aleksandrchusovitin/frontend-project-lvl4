@@ -1,6 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button, Card } from 'react-bootstrap';
+import * as yup from 'yup';
+
+import loginLogo from '../../resources/images/form_enter.png';
+
+console.log(loginLogo);
 
 const Login = () => {
   const usernameInputRef = useRef(null);
@@ -14,6 +19,10 @@ const Login = () => {
       username: '',
       password: '',
     },
+    validationSchema: yup.object().shape({
+      username: yup.string().required(),
+      password: yup.string().required(),
+    }),
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
     },
@@ -27,7 +36,7 @@ const Login = () => {
             <Card className="shadow-sm">
               <Card.Body className="row p-5">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                  <img className="rounded-circle" src="" alt="Войти" />
+                  <img className="rounded-circle" src={loginLogo} alt="Войти" />
                 </div>
                 <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">Войти</h1>
