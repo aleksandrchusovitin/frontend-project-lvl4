@@ -3,9 +3,7 @@ import { useFormik } from 'formik';
 import { Form, Button, Card } from 'react-bootstrap';
 import * as yup from 'yup';
 
-import loginLogo from '../../resources/images/form_enter.png';
-
-console.log(loginLogo);
+import loginLogo from '../../../assets/images/form_enter.png';
 
 const Login = () => {
   const usernameInputRef = useRef(null);
