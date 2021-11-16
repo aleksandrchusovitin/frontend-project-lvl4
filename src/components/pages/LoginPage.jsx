@@ -1,11 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import * as yup from 'yup';
+import axios from 'axios';
+import routes from '../../routes.js';
 
 import loginLogo from '../../../assets/images/form_enter.png';
 
-const Login = () => {
+const LoginPage = () => {
+  const [authFailed, setAuthFailed] = useState(false);
+  const location = useLocation();
+  const history = useHistory();
   const usernameInputRef = useRef(null);
 
   useEffect(() => {
@@ -21,8 +27,23 @@ const Login = () => {
       username: yup.string().required(),
       password: yup.string().required(),
     }),
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      setAuthFailed(false);
+
+      try {
+        const res = await axios.post(routes.loginPath(), values);
+        localStorage.setItem('userId', JSON.stringify(res.data));
+        // auth.logIn();
+        const { from } = location.state || { from: { pathname: '/' } };
+        history.replace(from);
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          usernameInputRef.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
 
@@ -49,6 +70,7 @@ const Login = () => {
                       ref={usernameInputRef}
                       onChange={formik.handleChange}
                       value={formik.values.username}
+                      isInvalid={authFailed}
                     />
                     <Form.Label htmlFor="username">Ваш ник</Form.Label>
                   </Form.Group>
@@ -62,8 +84,10 @@ const Login = () => {
                       autoComplete="current-password"
                       onChange={formik.handleChange}
                       value={formik.values.password}
+                      isInvalid={authFailed}
                     />
                     <Form.Label htmlFor="password">Пароль</Form.Label>
+                    <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>
                   </Form.Group>
                   <Button
                     variant="outline-primary"
@@ -87,4 +111,4 @@ const Login = () => {
     </div>
   );
 };
-export default Login;
+export default LoginPage;
