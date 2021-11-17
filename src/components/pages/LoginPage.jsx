@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import * as yup from 'yup';
 import axios from 'axios';
+
+import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
 
 import loginLogo from '../../../assets/images/form_enter.png';
@@ -11,8 +13,9 @@ import loginLogo from '../../../assets/images/form_enter.png';
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const usernameInputRef = useRef(null);
+  const auth = useAuth();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -33,9 +36,10 @@ const LoginPage = () => {
       try {
         const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
-        // auth.logIn();
+        auth.logIn();
         const { from } = location.state || { from: { pathname: '/' } };
-        history.replace(from);
+        navigate(from);
+        console.log(auth)
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
