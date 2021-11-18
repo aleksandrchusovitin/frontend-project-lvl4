@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
 
 const PrivateRoute = () => {
   const auth = useAuth();
-  console.log(auth)
+  console.log(auth); // !
   return auth.loggedIn ? <MainPage /> : <Navigate to="/login" />;
 };
 
