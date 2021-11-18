@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from 'react-router-dom';
 
 import authContext from '../../context/index.js';
@@ -11,20 +12,23 @@ import useAuth from '../../hooks/index.js';
 import { MainPage, LoginPage, Page404 } from '../pages';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const userToken = localStorage.getItem('user');
+  const [token, setToken] = useState(userToken);
 
-  const logIn = () => setLoggedIn(true);
+  const loggedIn = token != null;
+  const logIn = (item) => setToken(item);
   const logOut = () => {
     localStorage.removeItem('user');
-    setLoggedIn(false);
+    setToken(null);
   };
   const getUserToken = () => localStorage.getItem('user');
 
   return (
     <authContext.Provider value={{
+      token,
       loggedIn,
-      logIn,
       logOut,
+      logIn,
       getUserToken,
     }}
     >
@@ -35,15 +39,16 @@ const AuthProvider = ({ children }) => {
 
 const PrivateRoute = () => {
   const auth = useAuth();
-  console.log(auth); // !
-  return auth.loggedIn ? <MainPage /> : <Navigate to="/login" />;
+  return auth.loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 
 const App = () => (
   <AuthProvider>
     <Router>
       <Routes>
-        <Route path="/" element={<PrivateRoute />} />
+        <Route path="/" element={<PrivateRoute />}>
+          <Route path="/" element={<MainPage />} />
+        </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Page404 />} />
       </Routes>

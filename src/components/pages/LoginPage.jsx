@@ -35,8 +35,10 @@ const LoginPage = () => {
 
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('user', JSON.stringify(res.data));
-        auth.logIn();
+        const { data, data: { token } } = res;
+        localStorage.setItem('user', JSON.stringify(data));
+        auth.logIn(token);
+
         const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
       } catch (err) {
