@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Redirect,
+  Navigate,
 } from 'react-router-dom';
 
 import authContext from '../../context/index.js';
@@ -15,35 +15,35 @@ const AuthProvider = ({ children }) => {
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
     setLoggedIn(false);
   };
+  const getUserToken = () => localStorage.getItem('user');
 
   return (
-    <authContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <authContext.Provider value={{
+      loggedIn,
+      logIn,
+      logOut,
+      getUserToken,
+    }}
+    >
       {children}
     </authContext.Provider>
   );
 };
 
-// const PrivateRoute = ({ children, path }) => {
-//   const auth = useAuth();
-
-//   return (
-//     <Route
-//       path={path}
-//       render={({ location }) => (auth.loggedIn
-//         ? children
-//         : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
-//     />
-//   );
-// };
+const PrivateRoute = () => {
+  const auth = useAuth();
+  console.log(auth)
+  return auth.loggedIn ? <MainPage /> : <Navigate to="/login" />;
+};
 
 const App = () => (
   <AuthProvider>
     <Router>
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<PrivateRoute />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
