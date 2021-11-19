@@ -1,4 +1,4 @@
-import Page404 from './Page404.jsx';
+import Page404 from './page404/Page404.jsx';
 import LoginPage from './LoginPage.jsx';
 import MainPage from './MainPage.jsx';
 import NavBar from './NavBar.jsx';

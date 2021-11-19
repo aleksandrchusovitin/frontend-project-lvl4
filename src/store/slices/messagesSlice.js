@@ -8,7 +8,6 @@ const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    messagesFetched: (state) => state.messages,
     messagesAdded: (state, action) => [...state.messages, ...action.payload],
   },
 });

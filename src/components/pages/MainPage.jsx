@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Form, InputGroup } from 'react-bootstrap';
+import { useFormik } from 'formik';
 
 import store from '../../store/index.js';
 
@@ -24,10 +25,10 @@ const MainPage = () => {
   const auth = useAuth();
   const headers = getAuthHeader(auth);
 
-  const { dispatch } = store;
+  const { dispatch, getState } = store;
 
   useEffect(() => {
-    const fetchChannels = async () => {
+    const fetchData = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers });
       const { channels, messages } = data;
 
@@ -35,8 +36,34 @@ const MainPage = () => {
       dispatch(messagesAdded(messages));
     };
 
-    fetchChannels();
+    fetchData();
   }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      body: '',
+    },
+    onSubmit: async (values) => {
+      console.log(JSON.stringify(values, null, 2));
+    },
+  });
+
+  const renderChannelsList = () => {
+    // const { channels } = getState();
+    const channels = []; // !!
+    const items = channels.map(({ id, name }) => (
+      <li key={id} className="nav-item w-100">
+        <button type="button" className="w-100 rounded-0 text-start btn btn-secondary">
+          <span className="me-1">#</span>
+          {name}
+        </button>
+      </li>
+    ));
+
+    return (
+      <ul className="nav flex-column nav-pills nav-fill px-2">{items}</ul>
+    );
+  };
 
   return (
     <div className="d-flex flex-column h-100">
@@ -59,20 +86,7 @@ const MainPage = () => {
                 <span className="visually-hidden" />
               </button>
             </div>
-            <ul className="nav flex-column nav-pills nav-fill px-2">
-              <li className="nav-item w-100">
-                <button type="button" className="w-100 rounded-0 text-start btn btn-secondary">
-                  <span className="me-1">#</span>
-                  General
-                </button>
-              </li>
-              <li className="nav-item w-100">
-                <button type="button" className="w-100 rounded-0 text-start btn">
-                  <span className="me-1">#</span>
-                  Random
-                </button>
-              </li>
-            </ul>
+            {renderChannelsList()}
           </div>
           <div className="col p-0 h-100">
             <div className="d-flex flex-column h-100">
@@ -91,6 +105,8 @@ const MainPage = () => {
                       name="body"
                       data-testid="new-message"
                       placeholder="Введите сообщение..."
+                      onChange={formik.handleChange}
+                      value={formik.values.body}
                     />
                     <div className="input-group-append">
                       <button type="submit" disabled className="btn btn-group-vertical">
