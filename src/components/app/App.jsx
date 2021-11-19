@@ -9,7 +9,12 @@ import {
 
 import authContext from '../../context/index.js';
 import useAuth from '../../hooks/index.js';
-import { MainPage, LoginPage, Page404 } from '../pages';
+import {
+  MainPage,
+  LoginPage,
+  Page404,
+  NavBar,
+} from '../pages';
 
 const AuthProvider = ({ children }) => {
   const userToken = localStorage.getItem('user');
@@ -45,6 +50,7 @@ const PrivateRoute = () => {
 const App = () => (
   <AuthProvider>
     <Router>
+      <NavBar />
       <Routes>
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/" element={<MainPage />} />
