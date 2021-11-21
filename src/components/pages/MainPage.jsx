@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import cn from 'classnames';
 
-import store from '../../store/index.js';
-
-import { channelsAdded } from '../../store/slices/channelsSlice.js';
-import { messagesAdded } from '../../store/slices/messagesSlice.js';
+import { channelsFetching, channelsFetchingError, channelsFetched } from '../../store/slices/channelsSlice.js';
 
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
@@ -22,21 +21,26 @@ const getAuthHeader = (auth) => {
 };
 
 const MainPage = () => {
+  const [activeChannel, setActiveChannel] = useState('general');
   const auth = useAuth();
   const headers = getAuthHeader(auth);
 
-  const { dispatch, getState } = store;
+  const dispatch = useDispatch();
+  const { channels: { channels } } = useSelector((state) => state);
 
   useEffect(() => {
+    dispatch(channelsFetching);
     const fetchData = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers });
-      const { channels, messages } = data;
 
-      dispatch(channelsAdded(channels));
-      dispatch(messagesAdded(messages));
+      dispatch(channelsFetched(data.channels));
     };
 
-    fetchData();
+    try {
+      fetchData();
+    } catch {
+      dispatch(channelsFetchingError);
+    }
   }, []);
 
   const formik = useFormik({
@@ -48,17 +52,23 @@ const MainPage = () => {
     },
   });
 
-  const renderChannelsList = () => {
-    // const { channels } = getState();
-    const channels = []; // !!
-    const items = channels.map(({ id, name }) => (
-      <li key={id} className="nav-item w-100">
-        <button type="button" className="w-100 rounded-0 text-start btn btn-secondary">
-          <span className="me-1">#</span>
-          {name}
-        </button>
-      </li>
-    ));
+  const handleChangeChannel = (channelName) => () => {
+    setActiveChannel(channelName);
+  };
+
+  const renderChannelsList = (channelsData) => {
+    const items = channelsData.map(({ id, name }) => {
+      const className = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': activeChannel === name });
+
+      return (
+        <li key={id} className="nav-item w-100">
+          <button type="button" className={className} onClick={handleChangeChannel(name)}>
+            <span className="me-1">#</span>
+            {name}
+          </button>
+        </li>
+      );
+    });
 
     return (
       <ul className="nav flex-column nav-pills nav-fill px-2">{items}</ul>
@@ -86,13 +96,17 @@ const MainPage = () => {
                 <span className="visually-hidden" />
               </button>
             </div>
-            {renderChannelsList()}
+            {channels && renderChannelsList(channels)}
           </div>
           <div className="col p-0 h-100">
             <div className="d-flex flex-column h-100">
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
-                  <b># general</b>
+                  <b>
+                    #
+                    {' '}
+                    {activeChannel}
+                  </b>
                 </p>
                 <span className="text-muted">0 сообщений</span>
               </div>
