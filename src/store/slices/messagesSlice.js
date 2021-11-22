@@ -1,14 +1,25 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   messages: [],
+  messagesLoadingStatus: 'idle',
 };
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    messagesAdded: (state, action) => [...state.messages, ...action.payload],
+    messagesFetching: (state) => {
+      state.messagesLoadingStatus = 'loading';
+    },
+    messagesFetched: (state, action) => {
+      state.messagesLoadingStatus = 'idle';
+      state.messages = action.payload;
+    },
+    messagesFetchingError: (state) => {
+      state.messagesLoadingStatus = 'error';
+    },
   },
 });
 
@@ -16,6 +27,7 @@ const { actions, reducer } = messagesSlice;
 
 export default reducer;
 export const {
+  messagesFetching,
   messagesFetched,
-  messagesAdded,
+  messagesFetchingError,
 } = actions;

@@ -4,6 +4,8 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
+import { io } from 'socket.io-client';
+import * as yup from 'yup';
 
 import {
   channelsFetching,
@@ -12,6 +14,8 @@ import {
   currentChannelIdUpdated,
   currentChannelIdFetched,
 } from '../../store/slices/channelsSlice.js';
+
+import { messagesFetching, messagesFetched, messagesFetchingError } from '../../store/slices/messagesSlice.js';
 
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
@@ -26,6 +30,8 @@ const getAuthHeader = (auth) => {
   return {};
 };
 
+const socket = io({ reconnect: true });
+
 const MainPage = () => {
   const auth = useAuth();
   const headers = getAuthHeader(auth);
@@ -35,7 +41,8 @@ const MainPage = () => {
 
   useEffect(() => {
     dispatch(channelsFetching);
-    const fetchData = async () => {
+
+    const fetchChannelsData = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers });
 
       dispatch(channelsFetched(data.channels));
@@ -43,9 +50,25 @@ const MainPage = () => {
     };
 
     try {
-      fetchData();
+      fetchChannelsData();
     } catch {
       dispatch(channelsFetchingError);
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(messagesFetching);
+
+    const fetchMessagesData = async () => {
+      const { data } = await axios.get(routes.usersPath(), { headers });
+
+      dispatch(messagesFetched(data.messages));
+    };
+
+    try {
+      fetchMessagesData();
+    } catch {
+      dispatch(messagesFetchingError);
     }
   }, []);
 
@@ -53,8 +76,12 @@ const MainPage = () => {
     initialValues: {
       body: '',
     },
-    onSubmit: async (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    validationSchema: yup.object({
+      body: yup.mixed().required(),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      socket.on('newMessage', () => ({ channelId: currentChannelId, text: values.body }));
+      resetForm('');
     },
   });
 
@@ -123,7 +150,7 @@ const MainPage = () => {
               </div>
               <div id="messages-box" className="chat-messages overflow-auto px-5" />
               <div className="mt-auto px-5 py-3">
-                <Form className="py-1 border rounded-2" noValidate>
+                <Form className="py-1 border rounded-2" noValidate onSubmit={formik.handleSubmit}>
                   <InputGroup hasValidation>
                     <Form.Control
                       className="border-0 p-0 ps-2"
@@ -132,9 +159,10 @@ const MainPage = () => {
                       placeholder="Введите сообщение..."
                       onChange={formik.handleChange}
                       value={formik.values.body}
+                      required
                     />
                     <div className="input-group-append">
-                      <button type="submit" disabled className="btn btn-group-vertical">
+                      <button type="submit" disabled={!formik.dirty} className="btn btn-group-vertical">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 16 16"
