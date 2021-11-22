@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   channels: [],
   channelsLoadingStatus: 'idle',
+  currentChannelId: null,
 };
 
 const channelsSlice = createSlice({
@@ -20,6 +21,12 @@ const channelsSlice = createSlice({
     channelsFetchingError: (state) => {
       state.channelsLoadingStatus = 'error';
     },
+    currentChannelIdFetched: (state, action) => {
+      state.currentChannelId = action.payload;
+    },
+    currentChannelIdUpdated: (state, action) => {
+      state.currentChannelId = action.payload;
+    },
   },
 });
 
@@ -30,4 +37,6 @@ export const {
   channelsFetched,
   channelsFetching,
   channelsFetchingError,
+  currentChannelIdFetched,
+  currentChannelIdUpdated,
 } = actions;

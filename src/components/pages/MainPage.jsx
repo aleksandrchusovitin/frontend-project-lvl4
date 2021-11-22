@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { channelsFetching, channelsFetchingError, channelsFetched } from '../../store/slices/channelsSlice.js';
+import {
+  channelsFetching,
+  channelsFetchingError,
+  channelsFetched,
+  currentChannelIdUpdated,
+  currentChannelIdFetched,
+} from '../../store/slices/channelsSlice.js';
 
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
@@ -21,12 +27,11 @@ const getAuthHeader = (auth) => {
 };
 
 const MainPage = () => {
-  const [activeChannel, setActiveChannel] = useState('general');
   const auth = useAuth();
   const headers = getAuthHeader(auth);
 
   const dispatch = useDispatch();
-  const { channels: { channels } } = useSelector((state) => state);
+  const { channels: { channels, currentChannelId } } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(channelsFetching);
@@ -34,6 +39,7 @@ const MainPage = () => {
       const { data } = await axios.get(routes.usersPath(), { headers });
 
       dispatch(channelsFetched(data.channels));
+      dispatch(currentChannelIdFetched(data.currentChannelId));
     };
 
     try {
@@ -52,17 +58,17 @@ const MainPage = () => {
     },
   });
 
-  const handleChangeChannel = (channelName) => () => {
-    setActiveChannel(channelName);
+  const handleChangeChannel = (channelId) => () => {
+    dispatch(currentChannelIdUpdated(channelId));
   };
 
   const renderChannelsList = (channelsData) => {
     const items = channelsData.map(({ id, name }) => {
-      const className = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': activeChannel === name });
+      const className = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': currentChannelId === id });
 
       return (
         <li key={id} className="nav-item w-100">
-          <button type="button" className={className} onClick={handleChangeChannel(name)}>
+          <button type="button" className={className} onClick={handleChangeChannel(id)}>
             <span className="me-1">#</span>
             {name}
           </button>
@@ -73,6 +79,11 @@ const MainPage = () => {
     return (
       <ul className="nav flex-column nav-pills nav-fill px-2">{items}</ul>
     );
+  };
+
+  const getCurrentChannelName = (channelId) => {
+    const currentChannel = channels.find((c) => c.id === channelId);
+    return currentChannel.name;
   };
 
   return (
@@ -105,7 +116,7 @@ const MainPage = () => {
                   <b>
                     #
                     {' '}
-                    {activeChannel}
+                    {currentChannelId && getCurrentChannelName(currentChannelId)}
                   </b>
                 </p>
                 <span className="text-muted">0 сообщений</span>
