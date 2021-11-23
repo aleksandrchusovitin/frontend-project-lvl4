@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,6 +16,8 @@ import {
   Page404,
   NavBar,
 } from '../pages';
+
+import { addMessage } from '../../store/slices/messagesSlice.js';
 
 const AuthProvider = ({ children }) => {
   const userToken = localStorage.getItem('user');
@@ -47,19 +50,26 @@ const PrivateRoute = () => {
   return auth.loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 
-const App = () => (
-  <AuthProvider>
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<PrivateRoute />}>
-          <Route path="/" element={<MainPage />} />
-        </Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </Router>
-  </AuthProvider>
-);
+const App = ({ socket }) => {
+  const dispatch = useDispatch();
+  socket.on('newMessage', (payload) => {
+    dispatch(addMessage(payload));
+  });
+
+  return (
+    <AuthProvider>
+      <Router>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<MainPage socket={socket} />} />
+          </Route>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
+};
 
 export default App;

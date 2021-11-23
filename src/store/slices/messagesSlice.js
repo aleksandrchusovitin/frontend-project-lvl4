@@ -20,6 +20,9 @@ const messagesSlice = createSlice({
     messagesFetchingError: (state) => {
       state.messagesLoadingStatus = 'error';
     },
+    addMessage: (state, action) => {
+      state.messages = [...state.messages, action.payload];
+    },
   },
 });
 
@@ -30,4 +33,5 @@ export const {
   messagesFetching,
   messagesFetched,
   messagesFetchingError,
+  addMessage,
 } = actions;

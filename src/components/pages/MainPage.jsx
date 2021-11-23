@@ -4,7 +4,6 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { io } from 'socket.io-client';
 import * as yup from 'yup';
 
 import {
@@ -15,7 +14,11 @@ import {
   currentChannelIdFetched,
 } from '../../store/slices/channelsSlice.js';
 
-import { messagesFetching, messagesFetched, messagesFetchingError } from '../../store/slices/messagesSlice.js';
+import {
+  messagesFetching,
+  messagesFetched,
+  messagesFetchingError,
+} from '../../store/slices/messagesSlice.js';
 
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
@@ -30,14 +33,13 @@ const getAuthHeader = (auth) => {
   return {};
 };
 
-const socket = io({ reconnect: true });
-
-const MainPage = () => {
+const MainPage = ({ socket }) => {
   const auth = useAuth();
   const headers = getAuthHeader(auth);
 
   const dispatch = useDispatch();
-  const { channels: { channels, currentChannelId } } = useSelector((state) => state);
+  const store = useSelector((state) => state);
+  const { channels: { channels, currentChannelId }, messages: { messages } } = store;
 
   useEffect(() => {
     dispatch(channelsFetching);
@@ -80,7 +82,9 @@ const MainPage = () => {
       body: yup.mixed().required(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      socket.on('newMessage', () => ({ channelId: currentChannelId, text: values.body }));
+      const newMessage = { channelId: currentChannelId, text: values.body };
+
+      socket.emit('newMessage', newMessage);
       resetForm('');
     },
   });
@@ -107,6 +111,11 @@ const MainPage = () => {
       <ul className="nav flex-column nav-pills nav-fill px-2">{items}</ul>
     );
   };
+
+  const messagesForCurrentChannel = messages
+    .filter((m) => m.channelId === currentChannelId);
+
+  const renderMessagesList = (messagesData) => messagesData.map(({ id, text }) => <div key={id} className="text-break mb-2">{text}</div>);
 
   const getCurrentChannelName = (channelId) => {
     const currentChannel = channels.find((c) => c.id === channelId);
@@ -146,9 +155,11 @@ const MainPage = () => {
                     {currentChannelId && getCurrentChannelName(currentChannelId)}
                   </b>
                 </p>
-                <span className="text-muted">0 сообщений</span>
+                <span className="text-muted">{`${messagesForCurrentChannel.length} сообщений`}</span>
               </div>
-              <div id="messages-box" className="chat-messages overflow-auto px-5" />
+              <div id="messages-box" className="chat-messages overflow-auto px-5">
+                {renderMessagesList(messagesForCurrentChannel)}
+              </div>
               <div className="mt-auto px-5 py-3">
                 <Form className="py-1 border rounded-2" noValidate onSubmit={formik.handleSubmit}>
                   <InputGroup hasValidation>
