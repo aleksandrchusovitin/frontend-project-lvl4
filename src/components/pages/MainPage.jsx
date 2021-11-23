@@ -83,7 +83,6 @@ const MainPage = ({ socket }) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       const newMessage = { channelId: currentChannelId, text: values.body };
-
       socket.emit('newMessage', newMessage);
       resetForm('');
     },

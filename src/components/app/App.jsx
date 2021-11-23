@@ -53,6 +53,7 @@ const PrivateRoute = () => {
 const App = ({ socket }) => {
   const dispatch = useDispatch();
   socket.on('newMessage', (payload) => {
+    console.log(payload);
     dispatch(addMessage(payload));
   });
 
