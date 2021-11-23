@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
@@ -52,10 +52,12 @@ const PrivateRoute = () => {
 
 const App = ({ socket }) => {
   const dispatch = useDispatch();
-  socket.on('newMessage', (payload) => {
-    console.log(payload);
-    dispatch(addMessage(payload));
-  });
+
+  useEffect(() => {
+    socket.on('newMessage', (payload) => {
+      dispatch(addMessage(payload));
+    });
+  }, [socket]);
 
   return (
     <AuthProvider>

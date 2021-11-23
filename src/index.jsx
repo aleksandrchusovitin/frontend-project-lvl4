@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
-
+import './locales/i18next/i18next.js';
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 

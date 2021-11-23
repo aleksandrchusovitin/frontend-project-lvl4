@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import * as yup from 'yup';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
@@ -16,6 +17,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const usernameInputRef = useRef(null);
   const auth = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -60,14 +62,14 @@ const LoginPage = () => {
             <Card className="shadow-sm">
               <Card.Body className="row p-5">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                  <img className="rounded-circle" src={loginLogo} alt="Войти" />
+                  <img className="rounded-circle" src={loginLogo} alt={t('loginPage.header')} />
                 </div>
                 <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-                  <h1 className="text-center mb-4">Войти</h1>
+                  <h1 className="text-center mb-4">{t('loginPage.header')}</h1>
                   <Form.Group className="form-floating mb-3 form-group">
                     <Form.Control
                       type="text"
-                      placeholder="Ваш ник"
+                      placeholder={t('loginPage.inputs.nickname')}
                       name="username"
                       id="username"
                       required
@@ -77,12 +79,12 @@ const LoginPage = () => {
                       value={formik.values.username}
                       isInvalid={authFailed}
                     />
-                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                    <Form.Label htmlFor="username">{t('loginPage.inputs.nickname')}</Form.Label>
                   </Form.Group>
                   <Form.Group className="form-floating mb-3 form-group">
                     <Form.Control
                       type="password"
-                      placeholder="Пароль"
+                      placeholder={t('loginPage.inputs.password')}
                       name="password"
                       id="password"
                       required
@@ -91,22 +93,25 @@ const LoginPage = () => {
                       value={formik.values.password}
                       isInvalid={authFailed}
                     />
-                    <Form.Label htmlFor="password">Пароль</Form.Label>
-                    <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>
+                    <Form.Label htmlFor="password">{t('loginPage.inputs.password')}</Form.Label>
+                    <div className="invalid-tooltip">{t('loginPage.inputs.validationError')}</div>
                   </Form.Group>
                   <Button
                     variant="outline-primary"
                     className="w-100 mb-3"
                     type="submit"
                   >
-                    Войти
+                    {t('loginPage.buttons.signIn')}
                   </Button>
                 </Form>
               </Card.Body>
               <Card.Footer className="p-4">
                 <div className="text-center">
-                  <span>Нет аккаунта? </span>
-                  <a className="ml-5" href="/signup">Регистрация</a>
+                  <span>
+                    {t('loginPage.footerText')}
+                    {' '}
+                  </span>
+                  <a className="ml-5" href="/signup">{t('loginPage.footerLink')}</a>
                 </div>
               </Card.Footer>
             </Card>
