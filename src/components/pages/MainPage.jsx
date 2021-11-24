@@ -85,7 +85,7 @@ const MainPage = ({ socket }) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       const newMessage = { channelId: currentChannelId, text: values.body };
-      socket.emit('newMessage', newMessage);
+      socket.emit('newMessage', newMessage, console.log);
       resetForm('');
     },
   });
@@ -116,7 +116,13 @@ const MainPage = ({ socket }) => {
   const messagesForCurrentChannel = messages
     .filter((m) => m.channelId === currentChannelId);
 
-  const renderMessagesList = (messagesData) => messagesData.map(({ id, text }) => <div key={id} className="text-break mb-2">{text}</div>);
+  const renderMessagesList = (messagesData) => messagesData.map(({ id, text }) => (
+    <div key={id} className="text-break mb-2">
+      <b>username</b>
+      {': '}
+      {text}
+    </div>
+  ));
 
   const getCurrentChannelName = (channelId) => {
     const currentChannel = channels.find((c) => c.id === channelId);
@@ -156,7 +162,7 @@ const MainPage = ({ socket }) => {
                     {currentChannelId && getCurrentChannelName(currentChannelId)}
                   </b>
                 </p>
-                <span className="text-muted">{t('mainPage.messages', { message: messagesForCurrentChannel.length })}</span>
+                <span className="text-muted">{t('mainPage.messages.message', { count: messagesForCurrentChannel.length })}</span>
               </div>
               <div id="messages-box" className="chat-messages overflow-auto px-5">
                 {renderMessagesList(messagesForCurrentChannel)}

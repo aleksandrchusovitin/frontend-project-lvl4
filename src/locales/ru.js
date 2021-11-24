@@ -15,9 +15,9 @@ export default {
       },
 
       messages: {
-        message_0: '{{message}} сообщение',
-        message_1: '{{message}} сообщения',
-        message_2: '{{message}} сообщений',
+        message_0: '{{count}} сообщение',
+        message_1: '{{count}} сообщения',
+        message_2: '{{count}} сообщений',
       },
     },
     loginPage: {
