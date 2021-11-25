@@ -47,6 +47,7 @@ export default {
           submit: 'Отправить',
           cancel: 'Отменить',
         },
+        inputAriaLabel: 'Имя канала',
       },
     },
   },

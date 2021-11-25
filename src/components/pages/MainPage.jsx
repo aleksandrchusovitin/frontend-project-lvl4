@@ -92,8 +92,18 @@ const MainPage = ({ socket }) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       const newMessage = { channelId: currentChannelId, text: values.body };
+      // !! Написал, что-то страшное
+      const promise = new Promise((resolve, reject) => {
+        socket.emit('newMessage', newMessage, (data) => {
+          if (data.status !== 'ok') {
+            reject(new Error('Соединение с сервером прервано'));
+            return;
+          }
+          resolve();
+        });
+      });
+      await promise;
 
-      socket.emit('newMessage', newMessage, console.log);
       resetForm('');
     },
   });

@@ -56,7 +56,7 @@ const AddChannel = () => {
             <FormControl
               className="mb-2"
               name="name"
-              aria-label="Имя канала"
+              aria-label={t('modals.addChannel.inputAriaLabel')}
               onChange={formik.handleChange}
               value={formik.values.name}
               ref={addInputRef}
