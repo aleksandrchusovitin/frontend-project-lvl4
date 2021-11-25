@@ -40,5 +40,14 @@ export default {
         logout: 'Выйти',
       },
     },
+    modals: {
+      addChannel: {
+        header: 'Добавить канал',
+        buttons: {
+          submit: 'Отправить',
+          cancel: 'Отменить',
+        },
+      },
+    },
   },
 };

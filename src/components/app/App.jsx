@@ -62,14 +62,17 @@ const App = ({ socket }) => {
   return (
     <AuthProvider>
       <Router>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<PrivateRoute />}>
-            <Route path="/" element={<MainPage socket={socket} />} />
-          </Route>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<Page404 />} />
-        </Routes>
+        <div className="d-flex flex-column h-100">
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/" element={<MainPage socket={socket} />} />
+            </Route>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="*" element={<Page404 />} />
+          </Routes>
+        </div>
+        <div className="Toastify" />
       </Router>
     </AuthProvider>
   );

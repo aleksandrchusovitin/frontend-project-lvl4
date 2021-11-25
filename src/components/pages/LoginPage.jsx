@@ -55,67 +55,65 @@ const LoginPage = () => {
   });
 
   return (
-    <div className="d-flex flex-column h-100">
-      <div className="container-fluid h-100">
-        <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-8 col-xxl-6">
-            <Card className="shadow-sm">
-              <Card.Body className="row p-5">
-                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                  <img className="rounded-circle" src={loginLogo} alt={t('loginPage.header')} />
-                </div>
-                <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-                  <h1 className="text-center mb-4">{t('loginPage.header')}</h1>
-                  <Form.Group className="form-floating mb-3 form-group">
-                    <Form.Control
-                      type="text"
-                      placeholder={t('loginPage.inputs.nickname')}
-                      name="username"
-                      id="username"
-                      required
-                      autoComplete="username"
-                      ref={usernameInputRef}
-                      onChange={formik.handleChange}
-                      value={formik.values.username}
-                      isInvalid={authFailed}
-                    />
-                    <Form.Label htmlFor="username">{t('loginPage.inputs.nickname')}</Form.Label>
-                  </Form.Group>
-                  <Form.Group className="form-floating mb-3 form-group">
-                    <Form.Control
-                      type="password"
-                      placeholder={t('loginPage.inputs.password')}
-                      name="password"
-                      id="password"
-                      required
-                      autoComplete="current-password"
-                      onChange={formik.handleChange}
-                      value={formik.values.password}
-                      isInvalid={authFailed}
-                    />
-                    <Form.Label htmlFor="password">{t('loginPage.inputs.password')}</Form.Label>
-                    <div className="invalid-tooltip">{t('loginPage.inputs.validationError')}</div>
-                  </Form.Group>
-                  <Button
-                    variant="outline-primary"
-                    className="w-100 mb-3"
-                    type="submit"
-                  >
-                    {t('loginPage.buttons.signIn')}
-                  </Button>
-                </Form>
-              </Card.Body>
-              <Card.Footer className="p-4">
-                <div className="text-center">
-                  <span>
-                    {t('loginPage.footerText')}
-                    {' '}
-                  </span>
-                  <a className="ml-5" href="/signup">{t('loginPage.footerLink')}</a>
-                </div>
-              </Card.Footer>
-            </Card>
-          </div>
+    <div className="container-fluid h-100">
+      <div className="row justify-content-center align-content-center h-100">
+        <div className="col-12 col-md-8 col-xxl-6">
+          <Card className="shadow-sm">
+            <Card.Body className="row p-5">
+              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                <img className="rounded-circle" src={loginLogo} alt={t('loginPage.header')} />
+              </div>
+              <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
+                <h1 className="text-center mb-4">{t('loginPage.header')}</h1>
+                <Form.Group className="form-floating mb-3 form-group">
+                  <Form.Control
+                    type="text"
+                    placeholder={t('loginPage.inputs.nickname')}
+                    name="username"
+                    id="username"
+                    required
+                    autoComplete="username"
+                    ref={usernameInputRef}
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    isInvalid={authFailed}
+                  />
+                  <Form.Label htmlFor="username">{t('loginPage.inputs.nickname')}</Form.Label>
+                </Form.Group>
+                <Form.Group className="form-floating mb-3 form-group">
+                  <Form.Control
+                    type="password"
+                    placeholder={t('loginPage.inputs.password')}
+                    name="password"
+                    id="password"
+                    required
+                    autoComplete="current-password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    isInvalid={authFailed}
+                  />
+                  <Form.Label htmlFor="password">{t('loginPage.inputs.password')}</Form.Label>
+                  <div className="invalid-tooltip">{t('loginPage.inputs.validationError')}</div>
+                </Form.Group>
+                <Button
+                  variant="outline-primary"
+                  className="w-100 mb-3"
+                  type="submit"
+                >
+                  {t('loginPage.buttons.signIn')}
+                </Button>
+              </Form>
+            </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <span>
+                  {t('loginPage.footerText')}
+                  {' '}
+                </span>
+                <a className="ml-5" href="/signup">{t('loginPage.footerLink')}</a>
+              </div>
+            </Card.Footer>
+          </Card>
         </div>
       </div>
     </div>
