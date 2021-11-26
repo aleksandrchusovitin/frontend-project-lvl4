@@ -91,8 +91,13 @@ const MainPage = ({ socket }) => {
       body: yup.mixed().required(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      const newMessage = { channelId: currentChannelId, text: values.body };
-      // !! Написал, что-то страшное
+      const userName = JSON.parse(auth.token).username;
+      const newMessage = {
+        channelId: currentChannelId,
+        text: values.body,
+        username: userName,
+      };
+
       const promise = new Promise((resolve, reject) => {
         socket.emit('newMessage', newMessage, ({ status }) => {
           if (status !== 'ok') {
@@ -159,9 +164,9 @@ const MainPage = ({ socket }) => {
   const messagesForCurrentChannel = messages
     .filter((m) => m.channelId === currentChannelId);
 
-  const renderMessagesList = (messagesData) => messagesData.map(({ id, text }) => (
+  const renderMessagesList = (messagesData) => messagesData.map(({ id, text, username }) => (
     <div key={id} className="text-break mb-2">
-      <b>username</b>
+      <b>{username}</b>
       {': '}
       {text}
     </div>
@@ -169,7 +174,7 @@ const MainPage = ({ socket }) => {
 
   const getCurrentChannelName = (channelId) => {
     const currentChannel = channels.find((c) => c.id === channelId);
-    return currentChannel.name;
+    return currentChannel?.name;
   };
 
   const getModalContent = (modalState) => {

@@ -38,9 +38,10 @@ const AddChannel = ({ socket }) => {
     validationSchema: yup.object().shape({
       name: yup.mixed().notOneOf(channelsNames),
     }),
+    validateOnChange: false,
     onSubmit: async (values, { resetForm }) => {
       const newChannel = { name: values.name };
-      // !! Написал, что-то страшное
+
       const promise = new Promise((resolve, reject) => {
         socket.emit('newChannel', newChannel, ({ status, data }) => {
           if (status !== 'ok') {
