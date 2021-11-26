@@ -117,15 +117,36 @@ const MainPage = ({ socket }) => {
   };
 
   const renderChannelsList = (channelsData) => {
-    const items = channelsData.map(({ id, name }) => {
-      const className = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': currentChannelId === id });
+    const renderGeneralButton = (id, name, { classNameGeneralButton }) => (
+      <button type="button" className={classNameGeneralButton} onClick={handleChangeChannel(id)}>
+        <span className="me-1">#</span>
+        {name}
+      </button>
+    );
+      // !! сделать dropdown react-bootstrap
+    const renderExtraButton = (id, name, classNames) => (
+      <div role="group" className="d-flex show dropdown btn-group">
+        {renderGeneralButton(id, name, classNames)}
+        <button
+          type="button"
+          className={classNames.classNameExtraButton}
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-label={t('mainPage.buttons.extraButtonForChannel')}
+        />
+      </div>
+    );
+
+    const items = channelsData.map(({ id, name, removable }) => {
+      const classNameGeneralButton = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': currentChannelId === id });
+      const classNameExtraButton = cn('flex-grow-0 dropdown-toggle dropdown-toggle-split btn', { 'btn-secondary': currentChannelId === id });
+      const classNames = { classNameGeneralButton, classNameExtraButton };
 
       return (
         <li key={id} className="nav-item w-100">
-          <button type="button" className={className} onClick={handleChangeChannel(id)}>
-            <span className="me-1">#</span>
-            {name}
-          </button>
+          {removable
+            ? renderExtraButton(id, name, classNames)
+            : renderGeneralButton(id, name, classNames)}
         </li>
       );
     });
@@ -148,7 +169,6 @@ const MainPage = ({ socket }) => {
 
   const getCurrentChannelName = (channelId) => {
     const currentChannel = channels.find((c) => c.id === channelId);
-    console.log(channels);
     return currentChannel.name;
   };
 

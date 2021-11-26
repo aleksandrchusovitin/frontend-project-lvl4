@@ -11,6 +11,7 @@ export default {
 
       buttons: {
         submit: 'Отправить',
+        extraButtonForChannel: 'Управление каналом',
       },
 
       inputs: {
