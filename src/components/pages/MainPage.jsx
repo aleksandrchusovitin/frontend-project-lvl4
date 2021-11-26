@@ -94,9 +94,9 @@ const MainPage = ({ socket }) => {
       const newMessage = { channelId: currentChannelId, text: values.body };
       // !! Написал, что-то страшное
       const promise = new Promise((resolve, reject) => {
-        socket.emit('newMessage', newMessage, (data) => {
-          if (data.status !== 'ok') {
-            reject(new Error('Соединение с сервером прервано'));
+        socket.emit('newMessage', newMessage, ({ status }) => {
+          if (status !== 'ok') {
+            reject(new Error(t('errors.serverConnectionLost')));
             return;
           }
           resolve();
@@ -148,6 +148,7 @@ const MainPage = ({ socket }) => {
 
   const getCurrentChannelName = (channelId) => {
     const currentChannel = channels.find((c) => c.id === channelId);
+    console.log(channels);
     return currentChannel.name;
   };
 
@@ -157,7 +158,7 @@ const MainPage = ({ socket }) => {
     }
     const Modal = getModal(modalState);
 
-    return <Modal />;
+    return <Modal socket={socket} />;
   };
 
   return (

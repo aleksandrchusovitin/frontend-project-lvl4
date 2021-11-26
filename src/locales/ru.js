@@ -3,6 +3,9 @@ export default {
     languages: {
       ru: 'Русский',
     },
+    errors: {
+      serverConnectionLost: 'Соединение с сервером потеряно',
+    },
     mainPage: {
       channelsHeader: 'Каналы',
 
@@ -48,6 +51,7 @@ export default {
           cancel: 'Отменить',
         },
         inputAriaLabel: 'Имя канала',
+        inputFeedback: 'Должно быть уникальным',
       },
     },
   },

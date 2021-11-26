@@ -18,6 +18,7 @@ import {
 } from '../pages';
 
 import { addMessage } from '../../store/slices/messagesSlice.js';
+import { addChannel } from '../../store/slices/channelsSlice.js';
 
 const AuthProvider = ({ children }) => {
   const userToken = localStorage.getItem('user');
@@ -56,6 +57,9 @@ const App = ({ socket }) => {
   useEffect(() => {
     socket.on('newMessage', (payload) => {
       dispatch(addMessage(payload));
+    });
+    socket.on('newChannel', (payload) => {
+      dispatch(addChannel(payload));
     });
   }, [socket]);
 

@@ -8,14 +8,18 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
 
 import { modalSetting } from '../../store/slices/modalSlice.js';
+import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
 
-const AddChannel = () => {
+const AddChannel = ({ socket }) => {
   const addInputRef = useRef(null);
 
   const dispatch = useDispatch();
+  const { channels } = useSelector((state) => state.channels);
+  const channelsNames = channels.map((c) => c.name);
 
   useEffect(() => {
     addInputRef.current.focus();
@@ -31,8 +35,26 @@ const AddChannel = () => {
     initialValues: {
       name: '',
     },
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    validationSchema: yup.object().shape({
+      name: yup.mixed().notOneOf(channelsNames),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      const newChannel = { name: values.name };
+      // !! Написал, что-то страшное
+      const promise = new Promise((resolve, reject) => {
+        socket.emit('newChannel', newChannel, ({ status, data }) => {
+          if (status !== 'ok') {
+            reject(new Error(t('errors.serverConnectionLost')));
+            return;
+          }
+          dispatch(currentChannelIdUpdated(data.id));
+          resolve(data);
+        });
+      });
+      await promise;
+
+      resetForm('');
+
       dispatch(modalSetting(null));
     },
   });
@@ -60,8 +82,9 @@ const AddChannel = () => {
               onChange={formik.handleChange}
               value={formik.values.name}
               ref={addInputRef}
+              isInvalid={formik.errors.name}
             />
-            <div className="invalid-feedback" />
+            <div className="invalid-feedback">{formik.errors.name && t('modals.addChannel.inputFeedback')}</div>
             <div className="d-flex justify-content-end">
               <button
                 type="button"

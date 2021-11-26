@@ -27,6 +27,9 @@ const channelsSlice = createSlice({
     currentChannelIdUpdated: (state, action) => {
       state.currentChannelId = action.payload;
     },
+    addChannel: (state, action) => {
+      state.channels = [...state.channels, action.payload];
+    },
   },
 });
 
@@ -39,4 +42,5 @@ export const {
   channelsFetchingError,
   currentChannelIdFetched,
   currentChannelIdUpdated,
+  addChannel,
 } = actions;
