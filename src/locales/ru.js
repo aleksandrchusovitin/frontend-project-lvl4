@@ -12,6 +12,8 @@ export default {
       buttons: {
         submit: 'Отправить',
         extraButtonForChannel: 'Управление каналом',
+        channelDelete: 'Удалить',
+        channelRename: 'Переименовать',
       },
 
       inputs: {

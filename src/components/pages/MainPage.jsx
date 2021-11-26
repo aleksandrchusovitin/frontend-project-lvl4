@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import { Form, InputGroup } from 'react-bootstrap';
+import {
+  Form,
+  InputGroup,
+  Dropdown,
+  Button,
+} from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
@@ -122,36 +127,59 @@ const MainPage = ({ socket }) => {
   };
 
   const renderChannelsList = (channelsData) => {
-    const renderGeneralButton = (id, name, { classNameGeneralButton }) => (
-      <button type="button" className={classNameGeneralButton} onClick={handleChangeChannel(id)}>
-        <span className="me-1">#</span>
-        {name}
-      </button>
-    );
-      // !! сделать dropdown react-bootstrap
-    const renderExtraButton = (id, name, classNames) => (
-      <div role="group" className="d-flex show dropdown btn-group">
-        {renderGeneralButton(id, name, classNames)}
-        <button
-          type="button"
-          className={classNames.classNameExtraButton}
-          aria-haspopup="true"
-          aria-expanded="false"
-          aria-label={t('mainPage.buttons.extraButtonForChannel')}
-        />
-      </div>
-    );
+    const renderGeneralButton = (id, name, isCurrentChannel) => {
+      const classNameGeneralButton = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': isCurrentChannel });
+      return (
+        <button type="button" className={classNameGeneralButton} onClick={handleChangeChannel(id)}>
+          <span className="me-1">#</span>
+          {name}
+        </button>
+      );
+    };
 
+    const renderSplitButton = (name, id, isCurrentChannel) => {
+      const classNameSplitButton = cn('w-100 rounded-0 text-start text-truncate', { 'btn-secondary': isCurrentChannel });
+      return (
+        <Dropdown role="group" className="d-flex show btn-group">
+          <Button
+            className={classNameSplitButton}
+            variant={isCurrentChannel && 'secondary'}
+            onClick={handleChangeChannel(id)}
+          >
+            {`# ${name}`}
+          </Button>
+
+          <Dropdown.Toggle
+            split
+            variant={isCurrentChannel && 'secondary'}
+            className="flex-grow-0"
+            aria-haspopup="true"
+            aria-label={t('mainPage.buttons.extraButtonForChannel')}
+          />
+
+          <Dropdown.Menu>
+            <Dropdown.Item
+              href="#/action-1"
+            >
+              {t('mainPage.buttons.channelDelete')}
+            </Dropdown.Item>
+            <Dropdown.Item
+              href="#/action-2"
+            >
+              {t('mainPage.buttons.channelRename')}
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      );
+    };
     const items = channelsData.map(({ id, name, removable }) => {
-      const classNameGeneralButton = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': currentChannelId === id });
-      const classNameExtraButton = cn('flex-grow-0 dropdown-toggle dropdown-toggle-split btn', { 'btn-secondary': currentChannelId === id });
-      const classNames = { classNameGeneralButton, classNameExtraButton };
+      const isCurrentChannel = currentChannelId === id;
 
       return (
         <li key={id} className="nav-item w-100">
           {removable
-            ? renderExtraButton(id, name, classNames)
-            : renderGeneralButton(id, name, classNames)}
+            ? renderSplitButton(name, id, isCurrentChannel)
+            : renderGeneralButton(id, name, isCurrentChannel)}
         </li>
       );
     });
