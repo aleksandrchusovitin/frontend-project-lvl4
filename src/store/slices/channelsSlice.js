@@ -30,6 +30,22 @@ const channelsSlice = createSlice({
     addChannel: (state, action) => {
       state.channels = [...state.channels, action.payload];
     },
+    removeChannel: (state, action) => {
+      state.channels = state.channels.filter((c) => c.id !== action.payload);
+    },
+    renameChannel: (state, action) => {
+      const channelIndex = state.channels.findIndex((c) => c.id === action.payload.id);
+      const channel = state.channels[channelIndex];
+      const newChannel = { ...channel, name: action.payload.name };
+      state.channels[channelIndex] = newChannel;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase('removeChannel', (state, action) => {
+      const { channelId } = action.payload;
+      const restMessages = state.messages.filter((m) => m.channelId !== channelId);
+      channelsSlice.setAll(state, restMessages);
+    });
   },
 });
 
@@ -43,4 +59,6 @@ export const {
   currentChannelIdFetched,
   currentChannelIdUpdated,
   addChannel,
+  removeChannel,
+  renameChannel,
 } = actions;

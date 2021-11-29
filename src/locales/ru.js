@@ -56,6 +56,23 @@ export default {
         inputAriaLabel: 'Имя канала',
         inputFeedback: 'Должно быть уникальным',
       },
+      removeChannel: {
+        header: 'Удалить канал',
+        bodyQuestion: 'Уверены?',
+        buttons: {
+          remove: 'Удалить',
+          cancel: 'Отменить',
+        },
+      },
+      renameChannel: {
+        header: 'Переименовать канал',
+        inputAriaLabel: 'Имя канала',
+        inputFeedback: 'Должно быть уникальным',
+        buttons: {
+          submit: 'Отправить',
+          cancel: 'Отменить',
+        },
+      },
     },
   },
 };

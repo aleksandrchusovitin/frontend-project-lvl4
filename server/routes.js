@@ -53,7 +53,6 @@ export default (app, defaultState = {}) => {
       state.messages.push(messageWithId);
       acknowledge({ status: 'ok' });
       app.io.emit('newMessage', messageWithId);
-      console.log(state);
     });
 
     socket.on('newChannel', (channel, acknowledge = _.noop) => {
@@ -65,6 +64,7 @@ export default (app, defaultState = {}) => {
 
       state.channels.push(channelWithId);
       acknowledge({ status: 'ok', data: channelWithId });
+
       app.io.emit('newChannel', channelWithId);
     });
 

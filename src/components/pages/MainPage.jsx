@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Form,
@@ -43,6 +43,7 @@ const getAuthHeader = (auth) => {
 };
 
 const MainPage = ({ socket }) => {
+  const [channelWithAction, setChannelWithAction] = useState({});
   const auth = useAuth();
   const headers = getAuthHeader(auth);
   const { t } = useTranslation();
@@ -126,6 +127,18 @@ const MainPage = ({ socket }) => {
     dispatch(currentChannelIdUpdated(channelId));
   };
 
+  const handleRemoveChannel = (id, name, action) => async (e) => {
+    e.preventDefault();
+    setChannelWithAction({ id, name });
+    dispatch(modalSetting(action));
+  };
+
+  const handleRenameChannel = (id, name, action) => async (e) => {
+    e.preventDefault();
+    setChannelWithAction({ id, name });
+    dispatch(modalSetting(action));
+  };
+
   const renderChannelsList = (channelsData) => {
     const renderGeneralButton = (id, name, isCurrentChannel) => {
       const classNameGeneralButton = cn('w-100 rounded-0 text-start btn', { 'btn-secondary': isCurrentChannel });
@@ -159,12 +172,14 @@ const MainPage = ({ socket }) => {
 
           <Dropdown.Menu>
             <Dropdown.Item
-              href="#/action-1"
+              href="#"
+              onClick={handleRemoveChannel(id, name, 'removingChannel')}
             >
               {t('mainPage.buttons.channelDelete')}
             </Dropdown.Item>
             <Dropdown.Item
-              href="#/action-2"
+              href="#"
+              onClick={handleRenameChannel(id, name, 'renamingChannel')}
             >
               {t('mainPage.buttons.channelRename')}
             </Dropdown.Item>
@@ -211,7 +226,7 @@ const MainPage = ({ socket }) => {
     }
     const Modal = getModal(modalState);
 
-    return <Modal socket={socket} />;
+    return <Modal socket={socket} channelWithAction={channelWithAction} />;
   };
 
   return (
