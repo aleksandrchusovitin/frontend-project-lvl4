@@ -64,7 +64,6 @@ export default (app, defaultState = {}) => {
 
       state.channels.push(channelWithId);
       acknowledge({ status: 'ok', data: channelWithId });
-
       app.io.emit('newChannel', channelWithId);
     });
 
