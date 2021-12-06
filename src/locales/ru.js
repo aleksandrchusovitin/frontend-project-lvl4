@@ -41,6 +41,17 @@ export default {
         validationError: 'Неверные имя пользователя или пароль',
       },
     },
+    signUpPage: {
+      header: 'Регистрация',
+      buttons: {
+        signUp: 'Зарегистрироваться',
+      },
+      inputs: {
+        username: 'Имя пользователя',
+        password: 'Пароль',
+        confirmPassword: 'Подтвердите пароль',
+      },
+    },
     navBar: {
       buttons: {
         logout: 'Выйти',

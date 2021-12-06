@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import * as yup from 'yup';
 import axios from 'axios';
@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
 
-import loginLogo from '../../../assets/images/form_enter.png';
+import loginLogo from '../../../assets/images/login_logo.png';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
@@ -37,9 +37,9 @@ const LoginPage = () => {
 
       try {
         const res = await axios.post(routes.loginPath(), values);
-        const { data, data: { username, token } } = res;
+        const { data, data: { username } } = res;
         auth.setUser(data);
-        auth.logIn({ username, token });
+        auth.logIn(username);
 
         const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
@@ -111,7 +111,7 @@ const LoginPage = () => {
                   {t('loginPage.footerText')}
                   {' '}
                 </span>
-                <a className="ml-5" href="/signup">{t('loginPage.footerLink')}</a>
+                <Link className="ml-5" to="/signup">{t('loginPage.footerLink')}</Link>
               </div>
             </Card.Footer>
           </Card>

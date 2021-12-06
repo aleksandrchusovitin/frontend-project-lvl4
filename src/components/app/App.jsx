@@ -15,27 +15,27 @@ import {
   LoginPage,
   Page404,
   NavBar,
+  SignUp,
 } from '../pages';
 
 import { addMessage } from '../../store/slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from '../../store/slices/channelsSlice.js';
 
 const AuthProvider = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem('user')) || { username: null, token: null }; // ! Нужно фиксить, пока по другому не придумал
-  // ! так же названия переменных user, currentUser, data, item.....
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const token = currentUser ? currentUser.token : null;
+  const [userName, setUserName] = useState(currentUser ? currentUser.username : null);
 
-  const [currentUser, setCurrentUser] = useState(user);
-  const loggedIn = currentUser.token != null;
-  const logIn = (item) => setCurrentUser(item);
+  const loggedIn = token != null;
+  const logIn = (newUserName) => setUserName(newUserName);
   const logOut = () => {
     localStorage.removeItem('user');
-    setCurrentUser(() => ({ token: null }));
+    setUserName(null);
   };
-  const getUserName = () => currentUser.username;
   const setUser = (data) => localStorage.setItem('user', JSON.stringify(data));
   const getAuthHeader = () => {
-    if (currentUser && currentUser.token) {
-      return { Authorization: `Bearer ${currentUser.token}` };
+    if (userName && token) {
+      return { Authorization: `Bearer ${token}` };
     }
 
     return {};
@@ -43,12 +43,11 @@ const AuthProvider = ({ children }) => {
 
   return (
     <authContext.Provider value={{
-      currentUser,
+      userName,
       loggedIn,
       logOut,
       logIn,
       setUser,
-      getUserName,
       getAuthHeader,
     }}
     >
@@ -90,6 +89,7 @@ const App = ({ socket }) => {
               <Route path="/" element={<MainPage socket={socket} />} />
             </Route>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="*" element={<Page404 />} />
           </Routes>
         </div>

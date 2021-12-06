@@ -84,7 +84,7 @@ const MainPage = ({ socket }) => {
       body: yup.mixed().required(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      const userName = auth.getUserName();
+      const { userName } = auth;
       const newMessage = {
         channelId: currentChannelId,
         text: values.body,
@@ -264,6 +264,7 @@ const MainPage = ({ socket }) => {
                     onChange={formik.handleChange}
                     value={formik.values.body}
                     required
+                    autoComplete="off"
                   />
                   <div className="input-group-append">
                     <button type="submit" disabled={!formik.dirty} className="btn btn-group-vertical">
