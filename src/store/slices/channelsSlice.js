@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   channels: [],
   channelsLoadingStatus: 'idle',
-  currentChannelId: null,
+  currentChannelId: 1,
 };
 
 const channelsSlice = createSlice({
@@ -32,7 +32,7 @@ const channelsSlice = createSlice({
     },
     removeChannel: (state, action) => {
       state.channels = state.channels.filter((c) => c.id !== action.payload.id);
-      state.currentChannelId = 1; // !! это плохо
+      state.currentChannelId = initialState.currentChannelId;
     },
     renameChannel: (state, action) => {
       const channelIndex = state.channels.findIndex((c) => c.id === action.payload.id);

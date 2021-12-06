@@ -21,24 +21,35 @@ import { addMessage } from '../../store/slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from '../../store/slices/channelsSlice.js';
 
 const AuthProvider = ({ children }) => {
-  const userToken = localStorage.getItem('user');
-  const [token, setToken] = useState(userToken);
+  const user = JSON.parse(localStorage.getItem('user')) || { username: null, token: null }; // ! Нужно фиксить, пока по другому не придумал
+  // ! так же названия переменных user, currentUser, data, item.....
 
-  const loggedIn = token != null;
-  const logIn = (item) => setToken(item);
+  const [currentUser, setCurrentUser] = useState(user);
+  const loggedIn = currentUser.token != null;
+  const logIn = (item) => setCurrentUser(item);
   const logOut = () => {
     localStorage.removeItem('user');
-    setToken(null);
+    setCurrentUser(() => ({ token: null }));
   };
-  const getUserToken = () => localStorage.getItem('user');
+  const getUserName = () => currentUser.username;
+  const setUser = (data) => localStorage.setItem('user', JSON.stringify(data));
+  const getAuthHeader = () => {
+    if (currentUser && currentUser.token) {
+      return { Authorization: `Bearer ${currentUser.token}` };
+    }
+
+    return {};
+  };
 
   return (
     <authContext.Provider value={{
-      token,
+      currentUser,
       loggedIn,
       logOut,
       logIn,
-      getUserToken,
+      setUser,
+      getUserName,
+      getAuthHeader,
     }}
     >
       {children}

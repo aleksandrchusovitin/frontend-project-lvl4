@@ -32,20 +32,20 @@ import { modalSetting } from '../../store/slices/modalSlice.js';
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
 
-const getAuthHeader = (auth) => {
-  const user = JSON.parse(auth.getUserToken());
+// const getAuthHeader = (auth) => {
+//   const user = JSON.parse(auth.getUserToken());
 
-  if (user && user.token) {
-    return { Authorization: `Bearer ${user.token}` };
-  }
+//   if (user && user.token) {
+//     return { Authorization: `Bearer ${user.token}` };
+//   }
 
-  return {};
-};
+//   return {};
+// };
 
 const MainPage = ({ socket }) => {
   const [channelWithAction, setChannelWithAction] = useState({});
   const auth = useAuth();
-  const headers = getAuthHeader(auth);
+  const headers = auth.getAuthHeader();
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -58,33 +58,20 @@ const MainPage = ({ socket }) => {
 
   useEffect(() => {
     dispatch(channelsFetching);
+    dispatch(messagesFetching);
 
-    const fetchChannelsData = async () => {
+    const fetchData = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers });
 
       dispatch(channelsFetched(data.channels));
       dispatch(currentChannelIdFetched(data.currentChannelId));
-    };
-
-    try {
-      fetchChannelsData();
-    } catch {
-      dispatch(channelsFetchingError);
-    }
-  }, []);
-
-  useEffect(() => {
-    dispatch(messagesFetching);
-
-    const fetchMessagesData = async () => {
-      const { data } = await axios.get(routes.usersPath(), { headers });
-
       dispatch(messagesFetched(data.messages));
     };
 
     try {
-      fetchMessagesData();
+      fetchData();
     } catch {
+      dispatch(channelsFetchingError);
       dispatch(messagesFetchingError);
     }
   }, []);
@@ -97,7 +84,7 @@ const MainPage = ({ socket }) => {
       body: yup.mixed().required(),
     }),
     onSubmit: async (values, { resetForm }) => {
-      const userName = JSON.parse(auth.token).username;
+      const userName = auth.getUserName();
       const newMessage = {
         channelId: currentChannelId,
         text: values.body,
