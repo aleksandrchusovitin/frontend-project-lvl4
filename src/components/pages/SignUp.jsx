@@ -4,12 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import routes from '../../routes.js';
+import useAuth from '../../hooks/index.js';
+
 import signUpLogo from '../../../assets/images/signup_logo.jpg';
 
 const SignUp = () => {
   const usernameInputRef = useRef(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const auth = useAuth();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -36,9 +42,21 @@ const SignUp = () => {
         .required()
         .oneOf([yup.ref('password'), null], t('signUpPage.inputs.validationErrors.confirmPassword')),
     }),
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-      navigate('/');
+    onSubmit: async (values) => {
+      try {
+        const res = await axios.post(routes.signUpPath(), values);
+        const { data, data: { username } } = res;
+        auth.setUser(data);
+        auth.logIn(username);
+
+        navigate('/');
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 409) {
+          console.log('Такой пользователь уже существует');
+          return;
+        }
+        throw err;
+      }
     },
   });
 
