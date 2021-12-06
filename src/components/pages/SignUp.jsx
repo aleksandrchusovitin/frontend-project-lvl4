@@ -39,7 +39,7 @@ const SignUp = () => {
         .required(t('signUpPage.inputs.validationErrors.requiredField')),
       confirmPassword: yup
         .string()
-        .required()
+        .required(t('signUpPage.inputs.validationErrors.requiredField'))
         .oneOf([yup.ref('password'), null], t('signUpPage.inputs.validationErrors.confirmPassword')),
     }),
     onSubmit: async (values) => {
@@ -79,6 +79,7 @@ const SignUp = () => {
                     placeholder={t('signUpPage.inputs.validationErrors.username')}
                     required
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.username}
                     ref={usernameInputRef}
                     isInvalid={formik.errors.username && formik.touched.username}
@@ -98,6 +99,7 @@ const SignUp = () => {
                     aria-describedby="passwordHelpBlock"
                     required
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.password}
                     isInvalid={formik.errors.password && formik.touched.password}
                   />
@@ -115,6 +117,7 @@ const SignUp = () => {
                     placeholder={t('signUpPage.inputs.validationErrors.confirmPassword')}
                     required
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.confirmPassword}
                     isInvalid={formik.errors.confirmPassword && formik.touched.confirmPassword}
                   />

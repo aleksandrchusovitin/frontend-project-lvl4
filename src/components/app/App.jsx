@@ -12,7 +12,7 @@ import authContext from '../../context/index.js';
 import useAuth from '../../hooks/index.js';
 import {
   MainPage,
-  LoginPage,
+  Login,
   Page404,
   NavBar,
   SignUp,
@@ -88,7 +88,7 @@ const App = ({ socket }) => {
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/" element={<MainPage socket={socket} />} />
             </Route>
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="*" element={<Page404 />} />
           </Routes>
