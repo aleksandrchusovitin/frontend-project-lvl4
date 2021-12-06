@@ -22,9 +22,19 @@ const SignUp = () => {
       confirmPassword: '',
     },
     validationSchema: yup.object().shape({
-      username: yup.string().min(3).max(20).required(),
-      password: yup.string().min(6).required(),
-      confirmPassword: yup.string().required().oneOf([yup.ref('password'), null]),
+      username: yup
+        .string()
+        .min(3, t('signUpPage.inputs.validationErrors.username'))
+        .max(20, t('signUpPage.inputs.validationErrors.username'))
+        .required(t('signUpPage.inputs.validationErrors.requiredField')),
+      password: yup
+        .string()
+        .min(6, t('signUpPage.inputs.validationErrors.password'))
+        .required(t('signUpPage.inputs.validationErrors.requiredField')),
+      confirmPassword: yup
+        .string()
+        .required()
+        .oneOf([yup.ref('password'), null], t('signUpPage.inputs.validationErrors.confirmPassword')),
     }),
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
