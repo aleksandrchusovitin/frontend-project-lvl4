@@ -94,7 +94,7 @@ const AddChannel = ({ socket }) => {
               >
                 {t('modals.addChannel.buttons.cancel')}
               </button>
-              <Button type="submit">{t('modals.addChannel.buttons.submit')}</Button>
+              <Button type="submit" disabled={formik.isSubmitting}>{t('modals.addChannel.buttons.submit')}</Button>
             </div>
           </FormGroup>
         </Form>

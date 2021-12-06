@@ -99,6 +99,7 @@ const LoginPage = () => {
                   variant="outline-primary"
                   className="w-100 mb-3"
                   type="submit"
+                  disabled={formik.isSubmitting}
                 >
                   {t('loginPage.buttons.signIn')}
                 </Button>

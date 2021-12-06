@@ -93,7 +93,7 @@ const RenameChannel = ({ socket, channelWithAction }) => {
               >
                 {t('modals.renameChannel.buttons.cancel')}
               </button>
-              <Button type="submit">{t('modals.renameChannel.buttons.submit')}</Button>
+              <Button type="submit" disabled={formik.isSubmitting}>{t('modals.renameChannel.buttons.submit')}</Button>
             </div>
           </FormGroup>
         </Form>
