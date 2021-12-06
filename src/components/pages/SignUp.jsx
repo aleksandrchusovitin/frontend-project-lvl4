@@ -26,7 +26,6 @@ const SignUp = () => {
       password: yup.string().min(6).required(),
       confirmPassword: yup.string().required().oneOf([yup.ref('password'), null]),
     }),
-    validateOnBlur: false,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
       navigate('/');
@@ -54,7 +53,7 @@ const SignUp = () => {
                     onChange={formik.handleChange}
                     value={formik.values.username}
                     ref={usernameInputRef}
-                    isInvalid={formik.errors.username && !formik.touched.username}
+                    isInvalid={formik.errors.username && formik.touched.username}
                   />
                   <Form.Label htmlFor="username">{t('signUpPage.inputs.username')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
@@ -72,7 +71,7 @@ const SignUp = () => {
                     required
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    isInvalid={formik.errors.password && !!formik.touched.password}
+                    isInvalid={formik.errors.password && formik.touched.password}
                   />
                   <Form.Label htmlFor="password">{t('signUpPage.inputs.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
@@ -89,7 +88,7 @@ const SignUp = () => {
                     required
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
-                    isInvalid={formik.errors.confirmPassword && !formik.touched.confirmPassword}
+                    isInvalid={formik.errors.confirmPassword && formik.touched.confirmPassword}
                   />
                   <Form.Label htmlFor="confirmPassword">{t('signUpPage.inputs.confirmPassword')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
