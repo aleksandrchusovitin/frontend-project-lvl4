@@ -50,6 +50,12 @@ export default {
         username: 'Имя пользователя',
         password: 'Пароль',
         confirmPassword: 'Подтвердите пароль',
+        validationErrors: {
+          requiredField: 'Обязательное поле',
+          username: 'От 3 до 20 символов',
+          password: 'Не менее 6 символов',
+          confirmPassword: 'Пароли должны совпадать',
+        },
       },
     },
     navBar: {

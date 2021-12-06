@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
+import { useNavigate } from 'react-router-dom';
 import signUpLogo from '../../../assets/images/signup_logo.jpg';
 
 const SignUp = () => {
-  const [signUpFailed, setSignUpFailed] = useState(false);
   const usernameInputRef = useRef(null);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -26,11 +26,10 @@ const SignUp = () => {
       password: yup.string().min(6).required(),
       confirmPassword: yup.string().required().oneOf([yup.ref('password'), null]),
     }),
-    validateOnChange: true,
-    validateOnBlur: true,
+    validateOnBlur: false,
     onSubmit: (values) => {
-      setSignUpFailed(false);
       console.log(JSON.stringify(values, null, 2));
+      navigate('/');
     },
   });
 
@@ -43,22 +42,24 @@ const SignUp = () => {
               <div>
                 <img src={signUpLogo} className="rounded-circle" alt={t('signUpPage.header')} />
               </div>
-              <Form className="w-50">
+              <Form className="w-50" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('signUpPage.header')}</h1>
                 <Form.Group className="form-floating mb-3 form-group">
                   <Form.Control
                     id="username"
                     name="username"
                     autoComplete="username"
-                    placeholder="От 3 до 20 символов"
+                    placeholder={t('signUpPage.inputs.validationErrors.username')}
                     required
                     onChange={formik.handleChange}
                     value={formik.values.username}
-                    isInvalid={!formik.isValid}
                     ref={usernameInputRef}
+                    isInvalid={formik.errors.username && !formik.touched.username}
                   />
                   <Form.Label htmlFor="username">{t('signUpPage.inputs.username')}</Form.Label>
-                  <div placement="right" className="invalid-tooltip" />
+                  <Form.Control.Feedback type="invalid" tooltip placement="right">
+                    {formik.errors.username}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3 form-group">
                   <Form.Control
@@ -66,15 +67,17 @@ const SignUp = () => {
                     id="password"
                     name="password"
                     autoComplete="new-password"
-                    placeholder="Не менее 6 символов"
+                    placeholder={t('signUpPage.inputs.validationErrors.password')}
                     aria-describedby="passwordHelpBlock"
                     required
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    isInvalid={signUpFailed}
+                    isInvalid={formik.errors.password && !!formik.touched.password}
                   />
                   <Form.Label htmlFor="password">{t('signUpPage.inputs.password')}</Form.Label>
-                  <div placement="right" className="invalid-tooltip">Обязательное поле</div>
+                  <Form.Control.Feedback type="invalid" tooltip placement="right">
+                    {formik.errors.password}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-3 form-group">
                   <Form.Control
@@ -82,14 +85,16 @@ const SignUp = () => {
                     id="confirmPassword"
                     name="confirmPassword"
                     autoComplete="new-password"
-                    placeholder="Пароли должны совпадать"
+                    placeholder={t('signUpPage.inputs.validationErrors.confirmPassword')}
                     required
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
-                    isInvalid={signUpFailed}
+                    isInvalid={formik.errors.confirmPassword && !formik.touched.confirmPassword}
                   />
                   <Form.Label htmlFor="confirmPassword">{t('signUpPage.inputs.confirmPassword')}</Form.Label>
-                  <div placement="right" className="invalid-tooltip" />
+                  <Form.Control.Feedback type="invalid" tooltip placement="right">
+                    {formik.errors.confirmPassword}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Button
                   variant="outline-primary"
