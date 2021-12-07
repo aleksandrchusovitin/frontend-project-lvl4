@@ -1,9 +1,7 @@
 // @ts-check
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { io } from 'socket.io-client';
 import './locales/i18next/i18next.js';
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
@@ -13,20 +11,15 @@ import store from './store/index.js';
 
 import '../assets/application.scss';
 
-const init = () => {
+export default async (instanceSocket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }
-
-  const socket = io();
-
-  ReactDOM.render(
+  return (
     <React.StrictMode>
       <Provider store={store}>
-        <App socket={socket} />
+        <App socket={instanceSocket} />
       </Provider>
-    </React.StrictMode>,
-    document.getElementById('chat'),
+    </React.StrictMode>
   );
 };
-init();
