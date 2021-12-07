@@ -13,17 +13,20 @@ import store from './store/index.js';
 
 import '../assets/application.scss';
 
-if (process.env.NODE_ENV !== 'production') {
-  localStorage.debug = 'chat:*';
-}
+const init = () => {
+  if (process.env.NODE_ENV !== 'production') {
+    localStorage.debug = 'chat:*';
+  }
 
-const socket = io();
+  const socket = io();
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App socket={socket} />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('chat'),
-);
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App socket={socket} />
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('chat'),
+  );
+};
+init();
