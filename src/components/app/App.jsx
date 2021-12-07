@@ -27,12 +27,14 @@ const AuthProvider = ({ children }) => {
   const [userName, setUserName] = useState(currentUser ? currentUser.username : null);
 
   const loggedIn = token != null;
-  const logIn = (newUserName) => setUserName(newUserName);
+  const logIn = (data) => {
+    localStorage.setItem('user', JSON.stringify(data));
+    setUserName(data.username);
+  }
   const logOut = () => {
     localStorage.removeItem('user');
     setUserName(null);
   };
-  const setUser = (data) => localStorage.setItem('user', JSON.stringify(data));
   const getAuthHeader = () => {
     if (userName && token) {
       return { Authorization: `Bearer ${token}` };
@@ -47,7 +49,6 @@ const AuthProvider = ({ children }) => {
       loggedIn,
       logOut,
       logIn,
-      setUser,
       getAuthHeader,
     }}
     >

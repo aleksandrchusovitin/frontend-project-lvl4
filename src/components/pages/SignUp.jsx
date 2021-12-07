@@ -45,9 +45,8 @@ const SignUp = () => {
     onSubmit: async (values) => {
       try {
         const res = await axios.post(routes.signUpPath(), values);
-        const { data, data: { username } } = res;
-        auth.setUser(data);
-        auth.logIn(username);
+        const { data } = res;
+        auth.logIn(data);
 
         navigate('/');
       } catch (err) {
