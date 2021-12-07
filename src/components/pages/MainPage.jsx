@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import * as filter from 'leo-profanity';
 import 'react-toastify/dist/ReactToastify.css';
-
 import getModal from '../modals/index.js';
 import {
   channelsFetching,
@@ -79,7 +79,7 @@ const MainPage = ({ socket }) => {
       const { userName } = auth;
       const newMessage = {
         channelId: currentChannelId,
-        text: values.body,
+        text: filter.clean(values.body),
         username: userName,
       };
 

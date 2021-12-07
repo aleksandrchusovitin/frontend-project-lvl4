@@ -38,6 +38,7 @@
     "http-errors": "^1.8.0",
     "i18next": "^20.6.1",
     "jquery": "^3.6.0",
+    "leo-profanity": "^1.5.0",
     "lodash": "^4.17.21",
     "pino-pretty": "^4.8.0",
     "point-of-view": "^4.14.0",
