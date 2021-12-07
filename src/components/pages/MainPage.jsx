@@ -68,6 +68,9 @@ const MainPage = ({ socket }) => {
     }
   }, []);
 
+  const ruDict = filter.getDictionary('ru');
+  filter.add(ruDict);
+
   const formik = useFormik({
     initialValues: {
       body: '',
