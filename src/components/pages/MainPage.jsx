@@ -140,7 +140,7 @@ const MainPage = ({ socket }) => {
     const renderSplitButton = (name, id, isCurrentChannel) => {
       const classNameSplitButton = cn('w-100 rounded-0 text-start text-truncate', { 'btn-secondary': isCurrentChannel });
       return (
-        <Dropdown role="group" className="d-flex show btn-group">
+        <Dropdown role="group" className="d-flex btn-group">
           <Button
             className={classNameSplitButton}
             variant={isCurrentChannel && 'secondary'}

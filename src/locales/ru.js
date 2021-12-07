@@ -55,6 +55,7 @@ export default {
           username: 'От 3 до 20 символов',
           password: 'Не менее 6 символов',
           confirmPassword: 'Пароли должны совпадать',
+          dublicateUsername: 'Такой пользователь уже существует',
         },
       },
     },

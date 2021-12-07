@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -12,6 +12,7 @@ import useAuth from '../../hooks/index.js';
 import signUpLogo from '../../../assets/images/signup_logo.jpg';
 
 const SignUp = () => {
+  const [registrationFailed, setRegistrationFailed] = useState(false);
   const usernameInputRef = useRef(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const SignUp = () => {
         .oneOf([yup.ref('password'), null], t('signUpPage.inputs.validationErrors.confirmPassword')),
     }),
     onSubmit: async (values) => {
+      setRegistrationFailed(false);
       try {
         const res = await axios.post(routes.signUpPath(), values);
         const { data } = res;
@@ -51,7 +53,7 @@ const SignUp = () => {
         navigate('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
-          console.log('Такой пользователь уже существует');
+          setRegistrationFailed('Такой пользователь уже существует');
           return;
         }
         throw err;
@@ -81,7 +83,7 @@ const SignUp = () => {
                     onBlur={formik.handleBlur}
                     value={formik.values.username}
                     ref={usernameInputRef}
-                    isInvalid={formik.errors.username && formik.touched.username}
+                    isInvalid={(formik.errors.username && formik.touched.username) || registrationFailed}
                   />
                   <Form.Label htmlFor="username">{t('signUpPage.inputs.username')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
@@ -100,7 +102,7 @@ const SignUp = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
-                    isInvalid={formik.errors.password && formik.touched.password}
+                    isInvalid={(formik.errors.password && formik.touched.password) || registrationFailed}
                   />
                   <Form.Label htmlFor="password">{t('signUpPage.inputs.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
@@ -118,11 +120,11 @@ const SignUp = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.confirmPassword}
-                    isInvalid={formik.errors.confirmPassword && formik.touched.confirmPassword}
+                    isInvalid={(formik.errors.confirmPassword && formik.touched.confirmPassword) || registrationFailed}
                   />
                   <Form.Label htmlFor="confirmPassword">{t('signUpPage.inputs.confirmPassword')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
-                    {formik.errors.confirmPassword}
+                    {formik.errors.confirmPassword || t('signUpPage.inputs.validationErrors.dublicateUsername')}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Button
