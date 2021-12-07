@@ -103,6 +103,7 @@ const MainPage = ({ socket }) => {
 
   const handleChangeChannel = (channelId) => () => {
     dispatch(currentChannelIdUpdated(channelId));
+    addMessageInputRef.current.focus();
   };
 
   const handleRemoveChannel = (id, name, action) => async (e) => {
