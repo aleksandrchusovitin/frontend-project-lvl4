@@ -34,7 +34,7 @@ const RemoveChannel = ({ socket, channelWithAction }) => {
     });
     await promise;
 
-    toast(t('toasts.channelDeleted'));
+    toast(t('toasts.channelDeleted'), 'success');
 
     dispatch(modalSetting(null));
   };

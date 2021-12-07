@@ -7,6 +7,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import authContext from '../../context/index.js';
 import useAuth from '../../hooks/index.js';
@@ -17,7 +18,7 @@ import {
   NavBar,
   SignUp,
 } from '../pages';
-import { ToastContainer } from 'react-toastify';
+
 import { addMessage } from '../../store/slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from '../../store/slices/channelsSlice.js';
 

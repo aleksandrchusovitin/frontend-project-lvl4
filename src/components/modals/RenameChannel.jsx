@@ -55,7 +55,7 @@ const RenameChannel = ({ socket, channelWithAction }) => {
         });
       });
       await promise;
-      toast(t('toasts.channelRenamed'));
+      toast(t('toasts.channelRenamed'), 'success');
 
       dispatch(modalSetting(null));
     },

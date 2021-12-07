@@ -54,7 +54,7 @@ const AddChannel = ({ socket }) => {
         });
       });
       await promise;
-      toast(t('toasts.channelCreated'));
+      toast(t('toasts.channelCreated'), 'success');
 
       resetForm('');
 
