@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import {
   Form,
@@ -32,21 +32,12 @@ import { modalSetting } from '../../store/slices/modalSlice.js';
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
 
-// const getAuthHeader = (auth) => {
-//   const user = JSON.parse(auth.getUserToken());
-
-//   if (user && user.token) {
-//     return { Authorization: `Bearer ${user.token}` };
-//   }
-
-//   return {};
-// };
-
 const MainPage = ({ socket }) => {
   const [channelWithAction, setChannelWithAction] = useState({});
   const auth = useAuth();
   const headers = auth.getAuthHeader();
   const { t } = useTranslation();
+  const addMessageInputRef = useRef(null);
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -265,6 +256,7 @@ const MainPage = ({ socket }) => {
                     value={formik.values.body}
                     required
                     autoComplete="off"
+                    ref={addMessageInputRef}
                   />
                   <div className="input-group-append">
                     <button type="submit" disabled={!formik.dirty} className="btn btn-group-vertical">

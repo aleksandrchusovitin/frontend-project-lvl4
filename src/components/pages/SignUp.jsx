@@ -83,7 +83,10 @@ const SignUp = () => {
                     onBlur={formik.handleBlur}
                     value={formik.values.username}
                     ref={usernameInputRef}
-                    isInvalid={(formik.errors.username && formik.touched.username) || registrationFailed}
+                    isInvalid={
+                      (formik.errors.username
+                        && formik.touched.username) 
+                        || registrationFailed}
                   />
                   <Form.Label htmlFor="username">{t('signUpPage.inputs.username')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
@@ -102,7 +105,10 @@ const SignUp = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
-                    isInvalid={(formik.errors.password && formik.touched.password) || registrationFailed}
+                    isInvalid={
+                      (formik.errors.password
+                        && formik.touched.password)
+                        || registrationFailed}
                   />
                   <Form.Label htmlFor="password">{t('signUpPage.inputs.password')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
@@ -120,7 +126,10 @@ const SignUp = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.confirmPassword}
-                    isInvalid={(formik.errors.confirmPassword && formik.touched.confirmPassword) || registrationFailed}
+                    isInvalid={
+                      (formik.errors.confirmPassword
+                        && formik.touched.confirmPassword)
+                        || registrationFailed}
                   />
                   <Form.Label htmlFor="confirmPassword">{t('signUpPage.inputs.confirmPassword')}</Form.Label>
                   <Form.Control.Feedback type="invalid" tooltip placement="right">
