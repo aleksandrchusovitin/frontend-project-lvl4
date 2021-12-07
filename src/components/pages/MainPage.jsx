@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import 'react-toastify/dist/ReactToastify.css';
 
 import getModal from '../modals/index.js';
 import {

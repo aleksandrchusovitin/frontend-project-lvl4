@@ -13,6 +13,7 @@ import * as yup from 'yup';
 
 import { modalSetting } from '../../store/slices/modalSlice.js';
 import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
+import toast from '../../toast/index.js';
 
 const AddChannel = ({ socket }) => {
   const addInputRef = useRef(null);
@@ -53,6 +54,7 @@ const AddChannel = ({ socket }) => {
         });
       });
       await promise;
+      toast(t('toasts.channelCreated'));
 
       resetForm('');
 

@@ -26,6 +26,11 @@ export default {
         message_2: '{{count}} сообщений',
       },
     },
+    toasts: {
+      channelDeleted: 'Канал удалён',
+      channelRenamed: 'Канал переименован',
+      channelCreated: 'Канал создан',
+    },
     loginPage: {
       header: 'Войти',
       footerText: 'Нет аккаунта?',

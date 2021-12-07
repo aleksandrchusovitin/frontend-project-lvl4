@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { modalSetting } from '../../store/slices/modalSlice.js';
+import toast from '../../toast/index.js';
 
 const RenameChannel = ({ socket, channelWithAction }) => {
   const { id } = channelWithAction;
@@ -54,6 +55,7 @@ const RenameChannel = ({ socket, channelWithAction }) => {
         });
       });
       await promise;
+      toast(t('toasts.channelRenamed'));
 
       dispatch(modalSetting(null));
     },

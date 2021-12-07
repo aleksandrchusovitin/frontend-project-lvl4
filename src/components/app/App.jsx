@@ -17,7 +17,7 @@ import {
   NavBar,
   SignUp,
 } from '../pages';
-
+import { ToastContainer } from 'react-toastify';
 import { addMessage } from '../../store/slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from '../../store/slices/channelsSlice.js';
 
@@ -94,7 +94,7 @@ const App = ({ socket }) => {
             <Route path="*" element={<Page404 />} />
           </Routes>
         </div>
-        <div className="Toastify" />
+        <ToastContainer />
       </Router>
     </AuthProvider>
   );

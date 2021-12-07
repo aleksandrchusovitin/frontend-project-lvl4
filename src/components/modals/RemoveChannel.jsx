@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { modalSetting } from '../../store/slices/modalSlice.js';
 import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
+import toast from '../../toast/index.js';
 
 const RemoveChannel = ({ socket, channelWithAction }) => {
   const dispatch = useDispatch();
@@ -32,6 +33,9 @@ const RemoveChannel = ({ socket, channelWithAction }) => {
       });
     });
     await promise;
+
+    toast(t('toasts.channelDeleted'));
+
     dispatch(modalSetting(null));
   };
 
