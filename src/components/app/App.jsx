@@ -8,7 +8,6 @@ import {
   Outlet,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { Provider, ErrorBoundary } from '@rollbar/react';
 
 import authContext from '../../context/index.js';
 import useAuth from '../../hooks/index.js';
@@ -66,10 +65,6 @@ const PrivateRoute = () => {
 
 const App = ({ socket }) => {
   const dispatch = useDispatch();
-  const rollbarConfig = {
-    accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
-    environment: 'production',
-  };
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {
@@ -87,26 +82,22 @@ const App = ({ socket }) => {
   }, [socket]);
 
   return (
-    <Provider config={rollbarConfig}>
-      <ErrorBoundary>
-        <AuthProvider>
-          <Router>
-            <div className="d-flex flex-column h-100">
-              <NavBar />
-              <Routes>
-                <Route path="/" element={<PrivateRoute />}>
-                  <Route path="/" element={<MainPage socket={socket} />} />
-                </Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="*" element={<Page404 />} />
-              </Routes>
-            </div>
-            <ToastContainer />
-          </Router>
-        </AuthProvider>
-      </ErrorBoundary>
-    </Provider>
+    <AuthProvider>
+      <Router>
+        <div className="d-flex flex-column h-100">
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/" element={<MainPage socket={socket} />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="*" element={<Page404 />} />
+          </Routes>
+        </div>
+        <ToastContainer />
+      </Router>
+    </AuthProvider>
   );
 };
 
