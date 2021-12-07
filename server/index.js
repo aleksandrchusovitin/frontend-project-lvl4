@@ -14,6 +14,7 @@ import addRoutes from './routes.js';
 
 const { Unauthorized } = HttpErrors;
 
+// @ts-ignore
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url);
 // eslint-disable-next-line no-underscore-dangle
