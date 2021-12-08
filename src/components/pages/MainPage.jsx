@@ -39,6 +39,8 @@ const MainPage = ({ socket }) => {
   const headers = auth.getAuthHeader();
   const { t } = useTranslation();
   const addMessageInputRef = useRef(null);
+  const messagesBoxRef = useRef(null);
+
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -47,6 +49,12 @@ const MainPage = ({ socket }) => {
     messages: { messages },
     modal: { modal },
   } = store;
+
+  useEffect(() => {
+    if (messagesBoxRef.current) {
+      messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight;
+    }
+  });
 
   useEffect(() => {
     dispatch(channelsFetching);
@@ -246,7 +254,7 @@ const MainPage = ({ socket }) => {
               </p>
               <span className="text-muted">{t('mainPage.messages.message', { count: messagesForCurrentChannel.length })}</span>
             </div>
-            <div id="messages-box" className="chat-messages overflow-auto px-5">
+            <div ref={messagesBoxRef} id="messages-box" className="chat-messages overflow-auto px-5">
               {renderMessagesList(messagesForCurrentChannel)}
             </div>
             <div className="mt-auto px-5 py-3">
