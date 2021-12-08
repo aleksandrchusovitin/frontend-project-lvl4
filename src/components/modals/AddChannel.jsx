@@ -47,6 +47,7 @@ const AddChannel = ({ socket }) => {
         socket.emit('newChannel', newChannel, ({ status, data }) => {
           if (status !== 'ok') {
             reject(new Error(t('errors.serverConnectionLost')));
+            toast(t('toasts.signUpError'), 'error');
             return;
           }
           dispatch(currentChannelIdUpdated(data.id));

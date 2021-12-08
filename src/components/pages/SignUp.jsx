@@ -53,7 +53,7 @@ const SignUp = () => {
         navigate('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
-          setRegistrationFailed('Такой пользователь уже существует');
+          setRegistrationFailed(t('signUpPage.inputs.validationErrors.dublicateUsername'));
           return;
         }
         throw err;

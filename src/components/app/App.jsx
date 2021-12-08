@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -81,23 +82,32 @@ const App = ({ socket }) => {
     });
   }, [socket]);
 
+  const rollbarConfig = {
+    accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
+    environment: 'production',
+  };
+
   return (
-    <AuthProvider>
-      <Router>
-        <div className="d-flex flex-column h-100">
-          <NavBar />
-          <Routes>
-            <Route path="/" element={<PrivateRoute />}>
-              <Route path="/" element={<MainPage socket={socket} />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="*" element={<Page404 />} />
-          </Routes>
-        </div>
-        <ToastContainer />
-      </Router>
-    </AuthProvider>
+    <Provider config={rollbarConfig}>
+      <ErrorBoundary>
+        <AuthProvider>
+          <Router>
+            <div className="d-flex flex-column h-100">
+              <NavBar />
+              <Routes>
+                <Route path="/" element={<PrivateRoute />}>
+                  <Route path="/" element={<MainPage socket={socket} />} />
+                </Route>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="*" element={<Page404 />} />
+              </Routes>
+            </div>
+            <ToastContainer />
+          </Router>
+        </AuthProvider>
+      </ErrorBoundary>
+    </Provider>
   );
 };
 

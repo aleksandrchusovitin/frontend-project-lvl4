@@ -27,6 +27,7 @@ const RemoveChannel = ({ socket, channelWithAction }) => {
       socket.emit('removeChannel', { id }, ({ status }) => {
         if (status !== 'ok') {
           reject(new Error(t('errors.serverConnectionLost')));
+          toast(t('toasts.channelDeletedError'), 'error');
           return;
         }
         resolve();

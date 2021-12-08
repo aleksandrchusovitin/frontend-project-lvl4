@@ -49,6 +49,7 @@ const RenameChannel = ({ socket, channelWithAction }) => {
         socket.emit('renameChannel', { id, name }, ({ status }) => {
           if (status !== 'ok') {
             reject(new Error(t('errors.serverConnectionLost')));
+            toast(t('toasts.channelRenamedError'), 'error');
             return;
           }
           resolve();

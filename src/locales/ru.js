@@ -28,8 +28,11 @@ export default {
     },
     toasts: {
       channelDeleted: 'Канал удалён',
+      channelDeletedError: 'Не удалось удалить канал',
       channelRenamed: 'Канал переименован',
+      channelRenamedError: 'Не удалось переименовать канал',
       channelCreated: 'Канал создан',
+      channelCreatedError: 'Не удалось создать канал',
     },
     loginPage: {
       header: 'Войти',
