@@ -29,8 +29,8 @@ const LoginPage = () => {
       password: '',
     },
     validationSchema: yup.object().shape({
-      username: yup.string().required(),
-      password: yup.string().required(),
+      username: yup.mixed().required(),
+      password: yup.mixed().required(),
     }),
     onSubmit: async (values) => {
       setAuthFailed(false);
@@ -75,7 +75,9 @@ const LoginPage = () => {
                     ref={usernameInputRef}
                     onChange={formik.handleChange}
                     value={formik.values.username}
-                    isInvalid={authFailed}
+                    isInvalid={(formik.errors.username
+                      && formik.touched.username)
+                      || authFailed}
                   />
                   <Form.Label htmlFor="username">{t('loginPage.inputs.nickname')}</Form.Label>
                 </Form.Group>
@@ -89,10 +91,14 @@ const LoginPage = () => {
                     autoComplete="current-password"
                     onChange={formik.handleChange}
                     value={formik.values.password}
-                    isInvalid={authFailed}
+                    isInvalid={(formik.errors.password
+                      && formik.touched.password)
+                      || authFailed}
                   />
                   <Form.Label htmlFor="password">{t('loginPage.inputs.password')}</Form.Label>
-                  <div className="invalid-tooltip">{t('loginPage.inputs.validationError')}</div>
+                  <Form.Control.Feedback type="invalid" tooltip>
+                    {t('loginPage.inputs.validationError')}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Button
                   variant="outline-primary"
