@@ -96,9 +96,9 @@ const LoginPage = () => {
                       || authFailed}
                   />
                   <Form.Label htmlFor="password">{t('loginPage.inputs.password')}</Form.Label>
-                  <Form.Control.Feedback type="invalid" tooltip>
-                    {t('loginPage.inputs.validationError')}
-                  </Form.Control.Feedback>
+                  {authFailed
+                    ? <Form.Control.Feedback type="invalid" tooltip>{t('loginPage.inputs.validationError')}</Form.Control.Feedback>
+                    : null}
                 </Form.Group>
                 <Button
                   variant="outline-primary"
