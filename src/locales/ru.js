@@ -18,6 +18,7 @@ export default {
 
       inputs: {
         message: 'Введите сообщение...',
+        newMessageLabel: 'Новое сообщение',
       },
 
       messages: {

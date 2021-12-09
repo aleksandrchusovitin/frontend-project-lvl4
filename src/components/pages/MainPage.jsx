@@ -41,7 +41,6 @@ const MainPage = ({ socket }) => {
   const addMessageInputRef = useRef(null);
   const messagesBoxRef = useRef(null);
 
-
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
   const {
@@ -264,6 +263,7 @@ const MainPage = ({ socket }) => {
                     className="border-0 p-0 ps-2"
                     name="body"
                     data-testid="new-message"
+                    aria-label={t('mainPage.inputs.newMessageLabel')}
                     placeholder={t('mainPage.inputs.message')}
                     onChange={formik.handleChange}
                     value={formik.values.body}
