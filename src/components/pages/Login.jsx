@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useRollbar } from '@rollbar/react';
 import { useFormik } from 'formik';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
@@ -18,6 +19,7 @@ const LoginPage = () => {
   const usernameInputRef = useRef(null);
   const auth = useAuth();
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -46,6 +48,7 @@ const LoginPage = () => {
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           usernameInputRef.current.select();
+          rollbar.error(err);
           return;
         }
         throw err;

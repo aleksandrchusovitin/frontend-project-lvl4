@@ -1,5 +1,5 @@
 // @ts-check
-
+//  accessToken: process.env.ROLLBAR_TOKEN
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 

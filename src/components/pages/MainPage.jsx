@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useRollbar } from '@rollbar/react/lib';
 import axios from 'axios';
 import {
   Form,
@@ -40,6 +41,7 @@ const MainPage = ({ socket }) => {
   const { t } = useTranslation();
   const addMessageInputRef = useRef(null);
   const messagesBoxRef = useRef(null);
+  const rollbar = useRollbar();
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -69,7 +71,8 @@ const MainPage = ({ socket }) => {
 
     try {
       fetchData();
-    } catch {
+    } catch (err) {
+      rollbar.error(err);
       dispatch(channelsFetchingError);
       dispatch(messagesFetchingError);
     }

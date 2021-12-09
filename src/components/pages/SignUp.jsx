@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useRollbar } from '@rollbar/react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -17,6 +18,7 @@ const SignUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const auth = useAuth();
+  const rollbar = useRollbar();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -54,6 +56,7 @@ const SignUp = () => {
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           setRegistrationFailed(t('signUpPage.inputs.validationErrors.dublicateUsername'));
+          rollbar.error(err);
           return;
         }
         throw err;
