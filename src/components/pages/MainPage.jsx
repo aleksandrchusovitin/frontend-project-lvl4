@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useRollbar } from '@rollbar/react/lib';
+// import { useRollbar } from '@rollbar/react/lib';
 import axios from 'axios';
 import {
   Form,
@@ -33,6 +33,7 @@ import { modalSetting } from '../../store/slices/modalSlice.js';
 
 import useAuth from '../../hooks/index.js';
 import routes from '../../routes.js';
+import toast from '../../toast/index.js';
 
 const MainPage = ({ socket }) => {
   const [channelWithAction, setChannelWithAction] = useState({});
@@ -41,7 +42,7 @@ const MainPage = ({ socket }) => {
   const { t } = useTranslation();
   const addMessageInputRef = useRef(null);
   const messagesBoxRef = useRef(null);
-  const rollbar = useRollbar();
+  // const rollbar = useRollbar();
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -72,7 +73,8 @@ const MainPage = ({ socket }) => {
     try {
       fetchData();
     } catch (err) {
-      rollbar.error(err);
+      // rollbar.error(err);
+      toast(t('toasts.connectionError'), 'error');
       dispatch(channelsFetchingError);
       dispatch(messagesFetchingError);
     }
