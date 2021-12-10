@@ -70,14 +70,20 @@ const MainPage = ({ socket }) => {
       dispatch(messagesFetched(data.messages));
     };
 
-    try {
-      fetchData();
-    } catch (err) {
-      // rollbar.error(err);
-      toast(t('toasts.connectionError'), 'error');
-      dispatch(channelsFetchingError);
-      dispatch(messagesFetchingError);
-    }
+    fetchData()
+      .catch(() => {
+        toast(t('toasts.connectionError'), 'error');
+        dispatch(channelsFetchingError);
+        dispatch(messagesFetchingError);
+      });
+    // try {
+    //   fetchData();
+    // } catch (err) {
+    //   // rollbar.error(err);
+    // toast(t('toasts.connectionError'), 'error');
+    // dispatch(channelsFetchingError);
+    // dispatch(messagesFetchingError);
+    // }
   }, []);
 
   const ruDict = filter.getDictionary('ru');
