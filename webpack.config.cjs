@@ -1,7 +1,8 @@
 // @ts-check
-//  accessToken: process.env.ROLLBAR_TOKEN
+
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -24,6 +25,10 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new webpack.DefinePlugin({
+      ROLLBAR_ACCESS_TOKEN: JSON.stringify(process.env.ROLLBAR_ACCESS_TOKEN),
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    }),
   ],
   module: {
     rules: [

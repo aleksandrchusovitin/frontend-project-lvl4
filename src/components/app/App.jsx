@@ -83,8 +83,12 @@ const App = ({ socket }) => {
   }, [socket]);
 
   const rollbarConfig = {
-    accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
-    environment: 'production',
+    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    payload: {
+      environment: process.env.NODE_ENV,
+    },
   };
 
   return (

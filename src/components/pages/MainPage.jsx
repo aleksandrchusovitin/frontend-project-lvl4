@@ -76,14 +76,6 @@ const MainPage = ({ socket }) => {
         dispatch(channelsFetchingError);
         dispatch(messagesFetchingError);
       });
-    // try {
-    //   fetchData();
-    // } catch (err) {
-    //   // rollbar.error(err);
-    // toast(t('toasts.connectionError'), 'error');
-    // dispatch(channelsFetchingError);
-    // dispatch(messagesFetchingError);
-    // }
   }, []);
 
   const ruDict = filter.getDictionary('ru');
