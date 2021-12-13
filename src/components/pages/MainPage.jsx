@@ -72,6 +72,7 @@ const MainPage = ({ socket }) => {
 
     fetchData()
       .catch(() => {
+        // rollbar.error(err);
         toast(t('toasts.connectionError'), 'error');
         dispatch(channelsFetchingError);
         dispatch(messagesFetchingError);
