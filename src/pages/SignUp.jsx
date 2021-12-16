@@ -7,10 +7,10 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import routes from '../../routes.js';
-import useAuth from '../../hooks/index.js';
+import routes from '../routes.js';
+import useAuth from '../hooks/index.js';
 
-import signUpLogo from '../../../assets/images/signup_logo.jpg';
+import signUpLogo from '../../assets/images/signup_logo.jpg';
 
 const SignUp = () => {
   const [registrationFailed, setRegistrationFailed] = useState(false);

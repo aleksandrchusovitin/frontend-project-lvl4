@@ -10,18 +10,18 @@ import {
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import authContext from '../../context/index.js';
-import useAuth from '../../hooks/index.js';
+import authContext from './context/index.js';
+import useAuth from './hooks/index.js';
 import {
   MainPage,
   Login,
   Page404,
   NavBar,
   SignUp,
-} from '../pages';
+} from './pages';
 
-import { addMessage } from '../../store/slices/messagesSlice.js';
-import { addChannel, removeChannel, renameChannel } from '../../store/slices/channelsSlice.js';
+import { addMessage } from './store/slices/messagesSlice.js';
+import { addChannel, removeChannel, renameChannel } from './store/slices/channelsSlice.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));

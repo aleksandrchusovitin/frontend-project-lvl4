@@ -14,26 +14,26 @@ import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import * as filter from 'leo-profanity';
 import 'react-toastify/dist/ReactToastify.css';
-import getModal from '../modals/index.js';
+import getModal from '../components/modals/index.js';
 import {
   channelsFetching,
   channelsFetchingError,
   channelsFetched,
   currentChannelIdUpdated,
   currentChannelIdFetched,
-} from '../../store/slices/channelsSlice.js';
+} from '../store/slices/channelsSlice.js';
 
 import {
   messagesFetching,
   messagesFetched,
   messagesFetchingError,
-} from '../../store/slices/messagesSlice.js';
+} from '../store/slices/messagesSlice.js';
 
-import { modalSetting } from '../../store/slices/modalSlice.js';
+import { modalSetting } from '../store/slices/modalSlice.js';
 
-import useAuth from '../../hooks/index.js';
-import routes from '../../routes.js';
-import toast from '../../toast/index.js';
+import useAuth from '../hooks/index.js';
+import routes from '../routes.js';
+import toast from '../toast/index.js';
 
 const MainPage = ({ socket }) => {
   const [channelWithAction, setChannelWithAction] = useState({});

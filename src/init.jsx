@@ -6,7 +6,7 @@ import './locales/i18next/i18next.js';
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 
-import App from './components/app/App.jsx';
+import App from './App.jsx';
 import store from './store/index.js';
 
 import '../assets/application.scss';
