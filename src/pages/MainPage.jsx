@@ -31,7 +31,7 @@ import {
 
 import { modalSetting } from '../store/slices/modalSlice.js';
 
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 import toast from '../toast/index.js';
 

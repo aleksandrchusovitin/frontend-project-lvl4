@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,9 +7,9 @@ import {
   Outlet,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { AuthProvider } from './providers/index.js';
 
-import authContext from './context/index.js';
-import useAuth from './hooks/index.js';
+import { useAuth } from './hooks/index.js';
 import {
   MainPage,
   Login,
@@ -17,42 +17,6 @@ import {
   NavBar,
   SignUp,
 } from './pages';
-
-const AuthProvider = ({ children }) => {
-  const currentUser = JSON.parse(localStorage.getItem('user'));
-  const token = currentUser ? currentUser.token : null;
-  const [userName, setUserName] = useState(currentUser ? currentUser.username : null);
-
-  const loggedIn = token != null;
-  const logIn = (data) => {
-    localStorage.setItem('user', JSON.stringify(data));
-    setUserName(data.username);
-  };
-  const logOut = () => {
-    localStorage.removeItem('user');
-    setUserName(null);
-  };
-  const getAuthHeader = () => {
-    if (userName && token) {
-      return { Authorization: `Bearer ${token}` };
-    }
-
-    return {};
-  };
-
-  return (
-    <authContext.Provider value={{
-      userName,
-      loggedIn,
-      logOut,
-      logIn,
-      getAuthHeader,
-    }}
-    >
-      {children}
-    </authContext.Provider>
-  );
-};
 
 const PrivateRoute = () => {
   const auth = useAuth();
