@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Provider, ErrorBoundary } from '@rollbar/react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,9 +17,6 @@ import {
   NavBar,
   SignUp,
 } from './pages';
-
-import { addMessage } from './store/slices/messagesSlice.js';
-import { addChannel, removeChannel, renameChannel } from './store/slices/channelsSlice.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
@@ -64,55 +59,23 @@ const PrivateRoute = () => {
   return auth.loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 
-const App = ({ socket }) => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    socket.on('newMessage', (payload) => {
-      dispatch(addMessage(payload));
-    });
-    socket.on('newChannel', (payload) => {
-      dispatch(addChannel(payload));
-    });
-    socket.on('removeChannel', (payload) => {
-      dispatch(removeChannel(payload));
-    });
-    socket.on('renameChannel', (payload) => {
-      dispatch(renameChannel(payload));
-    });
-  }, [socket]);
-
-  const rollbarConfig = {
-    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-    payload: {
-      environment: process.env.NODE_ENV,
-    },
-  };
-
-  return (
-    <Provider config={rollbarConfig}>
-      <ErrorBoundary>
-        <AuthProvider>
-          <Router>
-            <div className="d-flex flex-column h-100">
-              <NavBar />
-              <Routes>
-                <Route path="/" element={<PrivateRoute />}>
-                  <Route path="/" element={<MainPage socket={socket} />} />
-                </Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="*" element={<Page404 />} />
-              </Routes>
-            </div>
-            <ToastContainer />
-          </Router>
-        </AuthProvider>
-      </ErrorBoundary>
-    </Provider>
-  );
-};
+const App = ({ socket }) => (
+  <AuthProvider>
+    <Router>
+      <div className="d-flex flex-column h-100">
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<MainPage socket={socket} />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </div>
+      <ToastContainer />
+    </Router>
+  </AuthProvider>
+);
 
 export default App;
