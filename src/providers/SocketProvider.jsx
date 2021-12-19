@@ -1,70 +1,28 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { socketContext } from '../context/index.js';
 
-import Context from '../context/index.js';
-import toast from '../toast/index.js';
-import { currentChannelIdUpdated } from '../store/slices/channelsSlice.js';
+const promisify = (socketFunction, errorMessage) => new Promise((resolve, reject) => {
+  socketFunction(({ status, data }) => {
+    if (status !== 'ok') {
+      reject(new Error(errorMessage));
+    }
+    resolve(data);
+  });
+});
 
 const SocketProvider = ({ socket, children }) => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const addMessage = async (newMessage) => {
-    const promise = new Promise((resolve, reject) => {
-      socket.emit('newMessage', newMessage, ({ status }) => {
-        if (status !== 'ok') {
-          reject(new Error(t('errors.serverConnectionLost')));
-          return;
-        }
-        resolve();
-      });
-    });
-    await promise;
-  };
-  const addChannel = async (newChannel) => {
-    const promise = new Promise((resolve, reject) => {
-      socket.emit('newChannel', newChannel, ({ status, data }) => {
-        if (status !== 'ok') {
-          reject(new Error(t('errors.serverConnectionLost')));
-          toast(t('toasts.signUpError'), 'error');
-          return;
-        }
-        dispatch(currentChannelIdUpdated(data.id));
-        resolve(data);
-      });
-    });
-    await promise;
-  };
-  const removeChannel = async (id) => {
-    const promise = new Promise((resolve, reject) => {
-      socket.emit('removeChannel', { id }, ({ status }) => {
-        if (status !== 'ok') {
-          reject(new Error(t('errors.serverConnectionLost')));
-          toast(t('toasts.channelDeletedError'), 'error');
-          return;
-        }
-        resolve();
-      });
-    });
-    await promise;
-  };
-  const renameChannel = async (id, name) => {
-    const promise = new Promise((resolve, reject) => {
-      socket.emit('renameChannel', { id, name }, ({ status }) => {
-        if (status !== 'ok') {
-          reject(new Error(t('errors.serverConnectionLost')));
-          toast(t('toasts.channelRenamedError'), 'error');
-          return;
-        }
-        resolve();
-      });
-    });
-    await promise;
-  };
+  const errorMessage = t('errors.serverConnectionLost');
+
+  const addMessage = promisify((...args) => socket.emit('newMessage', ...args), errorMessage);
+  const addChannel = promisify((...args) => socket.emit('newChannel', ...args), errorMessage);
+  const removeChannel = promisify((...args) => socket.emit('removeChannel', ...args), errorMessage);
+  const renameChannel = promisify((...args) => socket.emit('renameChannel', ...args), errorMessage);
 
   return (
-    <Context.Provider value={{
+    <socketContext.Provider value={{
       addMessage,
       addChannel,
       removeChannel,
@@ -72,7 +30,7 @@ const SocketProvider = ({ socket, children }) => {
     }}
     >
       {children}
-    </Context.Provider>
+    </socketContext.Provider>
   );
 };
 
