@@ -31,13 +31,15 @@ import {
 
 import { modalSetting } from '../store/slices/modalSlice.js';
 
-import { useAuth } from '../hooks/index.js';
+import { useAuth, useSocket } from '../hooks/index.js';
 import routes from '../routes.js';
 import toast from '../toast/index.js';
 
-const MainPage = ({ socket }) => {
+const MainPage = () => {
   const [channelWithAction, setChannelWithAction] = useState({});
   const auth = useAuth();
+  const socket = useSocket();
+
   const headers = auth.getAuthHeader();
   const { t } = useTranslation();
   const addMessageInputRef = useRef(null);
@@ -96,17 +98,18 @@ const MainPage = ({ socket }) => {
         text: filter.clean(values.body),
         username: userName,
       };
-
-      const promise = new Promise((resolve, reject) => {
-        socket.emit('newMessage', newMessage, ({ status }) => {
-          if (status !== 'ok') {
-            reject(new Error(t('errors.serverConnectionLost')));
-            return;
-          }
-          resolve();
-        });
-      });
-      await promise;
+      console.log(socket);
+      await socket.newMessage({ message: newMessage });
+      // const promise = new Promise((resolve, reject) => {
+      //   socket.emit('newMessage', newMessage, ({ status }) => {
+      //     if (status !== 'ok') {
+      //       reject(new Error(t('errors.serverConnectionLost')));
+      //       return;
+      //     }
+      //     resolve();
+      //   });
+      // });
+      // await promise;
 
       resetForm('');
     },

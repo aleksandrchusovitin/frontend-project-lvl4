@@ -23,14 +23,14 @@ const PrivateRoute = () => {
   return auth.loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 
-const App = ({ socket }) => (
+const App = () => (
   <AuthProvider>
     <Router>
       <div className="d-flex flex-column h-100">
         <NavBar />
         <Routes>
           <Route path="/" element={<PrivateRoute />}>
-            <Route path="/" element={<MainPage socket={socket} />} />
+            <Route path="/" element={<MainPage />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />

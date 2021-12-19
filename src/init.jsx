@@ -9,7 +9,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 
 import App from './App.jsx';
-
+import { SocketProvider } from './providers/index.js';
 import messages, { addMessage } from './store/slices/messagesSlice.js';
 import channels, { addChannel, removeChannel, renameChannel } from './store/slices/channelsSlice.js';
 import modal from './store/slices/modalSlice.js';
@@ -53,7 +53,9 @@ export default async (instanceSocket) => {
       <RollBarProvider config={rollbarConfig}>
         <ErrorBoundary>
           <Provider store={store}>
-            <App socket={instanceSocket} />
+            <SocketProvider socket={instanceSocket}>
+              <App />
+            </SocketProvider>
           </Provider>
         </ErrorBoundary>
       </RollBarProvider>
