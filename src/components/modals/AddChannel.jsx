@@ -11,12 +11,14 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
+import { useSocket } from '../../hooks/index.js';
 import { modalSetting } from '../../store/slices/modalSlice.js';
-import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
+// import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
 import toast from '../../toast/index.js';
 
-const AddChannel = ({ socket }) => {
+const AddChannel = () => {
   const addInputRef = useRef(null);
+  const socket = useSocket();
 
   const dispatch = useDispatch();
   const { channels } = useSelector((state) => state.channels);
@@ -42,20 +44,26 @@ const AddChannel = ({ socket }) => {
     validateOnChange: false,
     onSubmit: async (values, { resetForm }) => {
       const newChannel = { name: values.name };
-
-      const promise = new Promise((resolve, reject) => {
-        socket.emit('newChannel', newChannel, ({ status, data }) => {
-          if (status !== 'ok') {
-            reject(new Error(t('errors.serverConnectionLost')));
-            toast(t('toasts.signUpError'), 'error');
-            return;
-          }
-          dispatch(currentChannelIdUpdated(data.id));
-          resolve(data);
-        });
-      });
-      await promise;
-      toast(t('toasts.channelCreated'), 'success');
+      try {
+        await socket.addChannel(newChannel);
+        // dispatch(currentChannelIdUpdated(data.id));
+        toast(t('toasts.channelCreated'), 'success');
+      } catch {
+        toast(t('toasts.signUpError'), 'error');
+      }
+      // const promise = new Promise((resolve, reject) => {
+      //   socket.emit('newChannel', newChannel, ({ status, data }) => {
+      //     if (status !== 'ok') {
+      //       reject(new Error(t('errors.serverConnectionLost')));
+      //       toast(t('toasts.signUpError'), 'error');
+      //       return;
+      //     }
+      //     dispatch(currentChannelIdUpdated(data.id));
+      //     resolve(data);
+      //   });
+      // });
+      // await promise;
+      // toast(t('toasts.channelCreated'), 'success');
 
       resetForm('');
 

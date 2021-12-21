@@ -11,13 +11,15 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
+import { useSocket } from '../../hooks/index.js';
 import { modalSetting } from '../../store/slices/modalSlice.js';
 import toast from '../../toast/index.js';
 
-const RenameChannel = ({ socket, channelWithAction }) => {
+const RenameChannel = ({ channelWithAction }) => {
   const { id } = channelWithAction;
   const oldChannelName = channelWithAction.name;
   const renameInputRef = useRef(null);
+  const socket = useSocket();
 
   const dispatch = useDispatch();
   const { channels } = useSelector((state) => state.channels);
@@ -44,19 +46,24 @@ const RenameChannel = ({ socket, channelWithAction }) => {
     validateOnChange: false,
     onSubmit: async ({ name }, { resetForm }) => {
       resetForm('');
-
-      const promise = new Promise((resolve, reject) => {
-        socket.emit('renameChannel', { id, name }, ({ status }) => {
-          if (status !== 'ok') {
-            reject(new Error(t('errors.serverConnectionLost')));
-            toast(t('toasts.channelRenamedError'), 'error');
-            return;
-          }
-          resolve();
-        });
-      });
-      await promise;
-      toast(t('toasts.channelRenamed'), 'success');
+      try {
+        await socket.renameChannel({ id, name });
+        toast(t('toasts.channelRenamed'), 'success');
+      } catch {
+        toast(t('toasts.channelRenamedError'), 'error');
+      }
+      // const promise = new Promise((resolve, reject) => {
+      //   socket.emit('renameChannel', { id, name }, ({ status }) => {
+      //     if (status !== 'ok') {
+      //       reject(new Error(t('errors.serverConnectionLost')));
+      //       toast(t('toasts.channelRenamedError'), 'error');
+      //       return;
+      //     }
+      //     resolve();
+      //   });
+      // });
+      // await promise;
+      // toast(t('toasts.channelRenamed'), 'success');
 
       dispatch(modalSetting(null));
     },

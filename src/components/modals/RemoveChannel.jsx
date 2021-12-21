@@ -6,13 +6,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useSocket } from '../../hooks/index.js';
 import { modalSetting } from '../../store/slices/modalSlice.js';
 import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
 import toast from '../../toast/index.js';
 
-const RemoveChannel = ({ socket, channelWithAction }) => {
+const RemoveChannel = ({ channelWithAction }) => {
   const dispatch = useDispatch();
   const { channels } = useSelector((state) => state.channels);
+  const socket = useSocket();
 
   const { t } = useTranslation();
 
@@ -23,19 +25,25 @@ const RemoveChannel = ({ socket, channelWithAction }) => {
   const handleDelete = async () => {
     currentChannelIdUpdated(channels[0].id);
     const { id } = channelWithAction;
-    const promise = new Promise((resolve, reject) => {
-      socket.emit('removeChannel', { id }, ({ status }) => {
-        if (status !== 'ok') {
-          reject(new Error(t('errors.serverConnectionLost')));
-          toast(t('toasts.channelDeletedError'), 'error');
-          return;
-        }
-        resolve();
-      });
-    });
-    await promise;
+    try {
+      await socket.removeChannel({ id });
+      toast(t('toasts.channelDeleted'), 'success');
+    } catch {
+      toast(t('toasts.channelDeletedError'), 'error');
+    }
+    // const promise = new Promise((resolve, reject) => {
+    //   socket.emit('removeChannel', { id }, ({ status }) => {
+    //     if (status !== 'ok') {
+    //       reject(new Error(t('errors.serverConnectionLost')));
+    //       toast(t('toasts.channelDeletedError'), 'error');
+    //       return;
+    //     }
+    //     resolve();
+    //   });
+    // });
+    // await promise;
 
-    toast(t('toasts.channelDeleted'), 'success');
+    // toast(t('toasts.channelDeleted'), 'success');
 
     dispatch(modalSetting(null));
   };

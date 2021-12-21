@@ -98,18 +98,7 @@ const MainPage = () => {
         text: filter.clean(values.body),
         username: userName,
       };
-      console.log(socket);
-      await socket.newMessage({ message: newMessage });
-      // const promise = new Promise((resolve, reject) => {
-      //   socket.emit('newMessage', newMessage, ({ status }) => {
-      //     if (status !== 'ok') {
-      //       reject(new Error(t('errors.serverConnectionLost')));
-      //       return;
-      //     }
-      //     resolve();
-      //   });
-      // });
-      // await promise;
+      await socket.addMessage(newMessage);
 
       resetForm('');
     },
