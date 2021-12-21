@@ -49,7 +49,7 @@ const AddChannel = () => {
         dispatch(currentChannelIdUpdated(channel.id));
         toast(t('toasts.channelCreated'), 'success');
       } catch {
-        toast(t('toasts.signUpError'), 'error');
+        toast(t('toasts.channelCreatedError'), 'error');
       }
 
       resetForm('');
