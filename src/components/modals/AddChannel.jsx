@@ -13,7 +13,7 @@ import * as yup from 'yup';
 
 import { useSocket } from '../../hooks/index.js';
 import { modalSetting } from '../../store/slices/modalSlice.js';
-// import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
+import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
 import toast from '../../toast/index.js';
 
 const AddChannel = () => {
@@ -45,25 +45,12 @@ const AddChannel = () => {
     onSubmit: async (values, { resetForm }) => {
       const newChannel = { name: values.name };
       try {
-        await socket.addChannel(newChannel);
-        // dispatch(currentChannelIdUpdated(data.id));
+        const channel = await socket.addChannel(newChannel);
+        dispatch(currentChannelIdUpdated(channel.id));
         toast(t('toasts.channelCreated'), 'success');
       } catch {
         toast(t('toasts.signUpError'), 'error');
       }
-      // const promise = new Promise((resolve, reject) => {
-      //   socket.emit('newChannel', newChannel, ({ status, data }) => {
-      //     if (status !== 'ok') {
-      //       reject(new Error(t('errors.serverConnectionLost')));
-      //       toast(t('toasts.signUpError'), 'error');
-      //       return;
-      //     }
-      //     dispatch(currentChannelIdUpdated(data.id));
-      //     resolve(data);
-      //   });
-      // });
-      // await promise;
-      // toast(t('toasts.channelCreated'), 'success');
 
       resetForm('');
 

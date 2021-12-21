@@ -31,19 +31,6 @@ const RemoveChannel = ({ channelWithAction }) => {
     } catch {
       toast(t('toasts.channelDeletedError'), 'error');
     }
-    // const promise = new Promise((resolve, reject) => {
-    //   socket.emit('removeChannel', { id }, ({ status }) => {
-    //     if (status !== 'ok') {
-    //       reject(new Error(t('errors.serverConnectionLost')));
-    //       toast(t('toasts.channelDeletedError'), 'error');
-    //       return;
-    //     }
-    //     resolve();
-    //   });
-    // });
-    // await promise;
-
-    // toast(t('toasts.channelDeleted'), 'success');
 
     dispatch(modalSetting(null));
   };
