@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useSocket } from '../../hooks/index.js';
-import { modalSetting } from '../../store/slices/modalSlice.js';
+import { closeModal } from '../../store/slices/modalSlice.js';
 import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
 import toast from '../../toast/index.js';
 
@@ -19,7 +19,7 @@ const RemoveChannel = ({ channelWithAction }) => {
   const { t } = useTranslation();
 
   const handleClose = () => {
-    dispatch(modalSetting(null));
+    dispatch(closeModal());
   };
 
   const handleDelete = async () => {
@@ -32,7 +32,7 @@ const RemoveChannel = ({ channelWithAction }) => {
       toast(t('toasts.channelDeletedError'), 'error');
     }
 
-    dispatch(modalSetting(null));
+    dispatch(closeModal());
   };
 
   return (

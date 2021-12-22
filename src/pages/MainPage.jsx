@@ -29,7 +29,7 @@ import {
   messagesFetchingError,
 } from '../store/slices/messagesSlice.js';
 
-import { modalSetting } from '../store/slices/modalSlice.js';
+import { openModal } from '../store/slices/modalSlice.js';
 
 import { useAuth, useSocket } from '../hooks/index.js';
 import routes from '../routes.js';
@@ -51,7 +51,7 @@ const MainPage = () => {
   const {
     channels: { channels, currentChannelId },
     messages: { messages },
-    modal: { modal },
+    modal: { isOpened },
   } = store;
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const MainPage = () => {
   });
 
   const handleAddChannel = (action) => () => {
-    dispatch(modalSetting(action));
+    dispatch(openModal(action));
   };
 
   const handleChangeChannel = (channelId) => () => {
@@ -116,13 +116,13 @@ const MainPage = () => {
   const handleRemoveChannel = (id, name, action) => async (e) => {
     e.preventDefault();
     setChannelWithAction({ id, name });
-    dispatch(modalSetting(action));
+    dispatch(openModal(action));
   };
 
   const handleRenameChannel = (id, name, action) => async (e) => {
     e.preventDefault();
     setChannelWithAction({ id, name });
-    dispatch(modalSetting(action));
+    dispatch(openModal(action));
   };
 
   const renderChannelsList = (channelsData) => {
@@ -212,7 +212,7 @@ const MainPage = () => {
     }
     const Modal = getModal(modalState);
 
-    return <Modal socket={socket} channelWithAction={channelWithAction} />;
+    return <Modal channelWithAction={channelWithAction} />;
   };
 
   return (
@@ -290,7 +290,7 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      {getModalContent(modal)}
+      {getModalContent(isOpened)}
     </div>
   );
 };

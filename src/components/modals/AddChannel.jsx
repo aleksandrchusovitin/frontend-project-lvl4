@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { useSocket } from '../../hooks/index.js';
-import { modalSetting } from '../../store/slices/modalSlice.js';
+import { closeModal } from '../../store/slices/modalSlice.js';
 import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
 import toast from '../../toast/index.js';
 
@@ -31,7 +31,7 @@ const AddChannel = () => {
   const { t } = useTranslation();
 
   const handleClose = () => {
-    dispatch(modalSetting(null));
+    dispatch(closeModal());
   };
 
   const formik = useFormik({
@@ -54,7 +54,7 @@ const AddChannel = () => {
 
       resetForm('');
 
-      dispatch(modalSetting(null));
+      dispatch(closeModal());
     },
   });
 

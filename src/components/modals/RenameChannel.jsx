@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { useSocket } from '../../hooks/index.js';
-import { modalSetting } from '../../store/slices/modalSlice.js';
+import { closeModal } from '../../store/slices/modalSlice.js';
 import toast from '../../toast/index.js';
 
 const RenameChannel = ({ channelWithAction }) => {
@@ -33,7 +33,7 @@ const RenameChannel = ({ channelWithAction }) => {
   const { t } = useTranslation();
 
   const handleClose = () => {
-    dispatch(modalSetting(null));
+    dispatch(closeModal());
   };
 
   const formik = useFormik({
@@ -65,7 +65,7 @@ const RenameChannel = ({ channelWithAction }) => {
       // await promise;
       // toast(t('toasts.channelRenamed'), 'success');
 
-      dispatch(modalSetting(null));
+      dispatch(closeModal());
     },
   });
 
