@@ -73,7 +73,7 @@ const MainPage = () => {
     };
 
     fetchData()
-      .catch((err) => {
+      .catch(() => {
         // rollbar.error(err);
         toast(t('toasts.connectionError'), 'error');
         dispatch(channelsFetchingError);
