@@ -14,9 +14,9 @@ import {
   MainPage,
   Login,
   Page404,
-  NavBar,
   SignUp,
 } from './pages';
+import NavBar from './components/NavBar.jsx';
 
 const PrivateRoute = () => {
   const auth = useAuth();
