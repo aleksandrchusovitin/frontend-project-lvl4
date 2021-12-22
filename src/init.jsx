@@ -10,9 +10,9 @@ import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 
 import App from './App.jsx';
 import { SocketProvider } from './providers/index.js';
-import messages, { addMessage } from './store/slices/messagesSlice.js';
-import channels, { addChannel, removeChannel, renameChannel } from './store/slices/channelsSlice.js';
-import modal from './store/slices/modalSlice.js';
+import reducer from './store/slices/index.js';
+import { addMessage } from './store/slices/messagesSlice.js';
+import { addChannel, removeChannel, renameChannel } from './store/slices/channelsSlice.js';
 
 import '../assets/application.scss';
 
@@ -22,8 +22,7 @@ export default async (instanceSocket) => {
   }
 
   const store = configureStore({
-    reducer: { channels, messages, modal },
-    devTools: process.env.NODE_ENV !== 'production',
+    reducer,
   });
 
   instanceSocket.on('newMessage', (payload) => {
