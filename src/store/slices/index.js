@@ -4,13 +4,13 @@ import messagesReducers, { actions as messagesActions } from './messagesSlice.js
 import modalReducers, { actions as modalActions } from './modalSlice.js';
 
 export const actions = {
-  ...channelsActions,
   ...messagesActions,
+  ...channelsActions,
   ...modalActions,
 };
 
 export default combineReducers({
-  channelsReducers,
   messagesReducers,
+  channelsReducers,
   modalReducers,
 });
