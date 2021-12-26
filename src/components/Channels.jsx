@@ -1,17 +1,40 @@
-import React from 'react';
+import React from 'react'; // { useState }
 import cn from 'classnames';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+
+import { openModal } from '../store/slices/modalSlice.js';
+import { currentChannelIdUpdated } from '../store/slices/channelsSlice.js';
 
 const Channels = ({
   channels,
-  handleAddChannel,
-  handleChangeChannel,
-  handleRemoveChannel,
-  handleRenameChannel,
   currentChannelId,
 }) => {
   const { t } = useTranslation();
+  // const [channelWithAction, setChannelWithAction] = useState({});
+  const dispatch = useDispatch();
+
+  const handleAddChannel = (action) => () => {
+    dispatch(openModal(action));
+  };
+
+  const handleChangeChannel = (channelId) => () => {
+    dispatch(currentChannelIdUpdated(channelId));
+    // addMessageInputRef.current.focus(); // !! Как поставить в фокус не пойму тут
+  };
+
+  const handleRemoveChannel = (id, name, action) => async (e) => {
+    e.preventDefault();
+    // setChannelWithAction({ id, name });
+    dispatch(openModal(action));
+  };
+
+  const handleRenameChannel = (id, name, action) => async (e) => {
+    e.preventDefault();
+    // setChannelWithAction({ id, name });
+    dispatch(openModal(action));
+  };
 
   const renderChannelsList = (channelsData) => {
     const renderGeneralButton = (id, name, isCurrentChannel) => {
