@@ -1,19 +1,21 @@
-import React from 'react'; // { useState }
+import React from 'react';
 import cn from 'classnames';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { openModal } from '../store/slices/modalSlice.js';
-import { currentChannelIdUpdated } from '../store/slices/channelsSlice.js';
+import { actions } from '../store/slices';
 
-const Channels = ({
-  channels,
-  currentChannelId,
-}) => {
+const {
+  openModal,
+  currentChannelIdUpdated,
+  channelWithActionUpdated,
+} = actions;
+
+const Channels = () => {
   const { t } = useTranslation();
-  // const [channelWithAction, setChannelWithAction] = useState({});
   const dispatch = useDispatch();
+  const { channelsReducers: { channels, currentChannelId } } = useSelector((state) => state);
 
   const handleAddChannel = (action) => () => {
     dispatch(openModal(action));
@@ -21,18 +23,17 @@ const Channels = ({
 
   const handleChangeChannel = (channelId) => () => {
     dispatch(currentChannelIdUpdated(channelId));
-    // addMessageInputRef.current.focus(); // !! Как поставить в фокус не пойму тут
   };
 
   const handleRemoveChannel = (id, name, action) => async (e) => {
     e.preventDefault();
-    // setChannelWithAction({ id, name });
+    dispatch(channelWithActionUpdated({ id, name }));
     dispatch(openModal(action));
   };
 
   const handleRenameChannel = (id, name, action) => async (e) => {
     e.preventDefault();
-    // setChannelWithAction({ id, name });
+    dispatch(channelWithActionUpdated({ id, name }));
     dispatch(openModal(action));
   };
 

@@ -12,8 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { useSocket } from '../../hooks';
-import { closeModal } from '../../store/slices/modalSlice.js';
+import { actions } from '../../store/slices';
 import toast from '../../toast';
+
+const { closeModal } = actions;
 
 const RenameChannel = ({ channelWithAction }) => {
   const { id } = channelWithAction;
@@ -22,7 +24,7 @@ const RenameChannel = ({ channelWithAction }) => {
   const socket = useSocket();
 
   const dispatch = useDispatch();
-  const { channels } = useSelector((state) => state.channels);
+  const { channels } = useSelector((state) => state.channelsReducers);
   const channelsNames = channels.map((c) => c.name);
 
   useEffect(() => {
@@ -52,18 +54,6 @@ const RenameChannel = ({ channelWithAction }) => {
       } catch {
         toast(t('toasts.channelRenamedError'), 'error');
       }
-      // const promise = new Promise((resolve, reject) => {
-      //   socket.emit('renameChannel', { id, name }, ({ status }) => {
-      //     if (status !== 'ok') {
-      //       reject(new Error(t('errors.serverConnectionLost')));
-      //       toast(t('toasts.channelRenamedError'), 'error');
-      //       return;
-      //     }
-      //     resolve();
-      //   });
-      // });
-      // await promise;
-      // toast(t('toasts.channelRenamed'), 'success');
 
       dispatch(closeModal());
     },

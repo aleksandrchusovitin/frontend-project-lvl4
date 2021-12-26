@@ -7,13 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useSocket } from '../../hooks';
-import { closeModal } from '../../store/slices/modalSlice.js';
-import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
+import { actions } from '../../store/slices';
 import toast from '../../toast';
+
+const { closeModal, currentChannelIdUpdated } = actions;
 
 const RemoveChannel = ({ channelWithAction }) => {
   const dispatch = useDispatch();
-  const { channels } = useSelector((state) => state.channels);
+  const { channels } = useSelector((state) => state.channelsReducers);
   const socket = useSocket();
 
   const { t } = useTranslation();

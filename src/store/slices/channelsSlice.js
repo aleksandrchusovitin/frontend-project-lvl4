@@ -3,29 +3,23 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   channels: [],
-  channelsLoadingStatus: 'idle',
   currentChannelId: 1,
+  channelWithAction: null,
 };
 
 const channelsSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
-    channelsFetching: (state) => {
-      state.channelsLoadingStatus = 'loading';
-    },
-    channelsFetched: (state, action) => {
-      state.channelsLoadingStatus = 'idle';
-      state.channels = action.payload;
-    },
-    channelsFetchingError: (state) => {
-      state.channelsLoadingStatus = 'error';
-    },
-    currentChannelIdFetched: (state, action) => {
-      state.currentChannelId = action.payload;
+    getData: (state, action) => {
+      state.channels = action.payload.channels;
+      state.currentChannelId = action.payload.currentChannelId;
     },
     currentChannelIdUpdated: (state, action) => {
       state.currentChannelId = action.payload;
+    },
+    channelWithActionUpdated: (state, action) => {
+      state.channelWithAction = action.payload;
     },
     addChannel: (state, action) => {
       state.channels = [...state.channels, action.payload];
@@ -45,14 +39,5 @@ const channelsSlice = createSlice({
 
 const { actions, reducer } = channelsSlice;
 
+export { actions };
 export default reducer;
-export const {
-  channelsFetched,
-  channelsFetching,
-  channelsFetchingError,
-  currentChannelIdFetched,
-  currentChannelIdUpdated,
-  addChannel,
-  removeChannel,
-  renameChannel,
-} = actions;

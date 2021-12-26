@@ -1,25 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { removeChannel } from './channelsSlice.js';
+import { actions as channelsActions } from './channelsSlice.js';
 
 const initialState = {
   messages: [],
-  messagesLoadingStatus: 'idle',
 };
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    messagesFetching: (state) => {
-      state.messagesLoadingStatus = 'loading';
-    },
-    messagesFetched: (state, action) => {
-      state.messagesLoadingStatus = 'idle';
-      state.messages = action.payload;
-    },
-    messagesFetchingError: (state) => {
-      state.messagesLoadingStatus = 'error';
+    getData: (state, action) => {
+      state.messages = action.payload.messages;
     },
     addMessage: (state, action) => {
       state.messages = [...state.messages, action.payload];
@@ -27,7 +19,7 @@ const messagesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(removeChannel, (state, action) => {
+      .addCase(channelsActions.removeChannel, (state, action) => {
         const { id } = action.payload;
         state.messages = state.messages.filter((m) => m.channelId !== id);
       });
@@ -36,10 +28,5 @@ const messagesSlice = createSlice({
 
 const { actions, reducer } = messagesSlice;
 
+export { actions };
 export default reducer;
-export const {
-  messagesFetching,
-  messagesFetched,
-  messagesFetchingError,
-  addMessage,
-} = actions;

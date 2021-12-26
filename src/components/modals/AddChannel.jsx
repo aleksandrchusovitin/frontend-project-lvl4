@@ -12,16 +12,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { useSocket } from '../../hooks';
-import { closeModal } from '../../store/slices/modalSlice.js';
-import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
+import { actions } from '../../store/slices';
 import toast from '../../toast';
+
+const { closeModal, currentChannelIdUpdated } = actions;
 
 const AddChannel = () => {
   const addInputRef = useRef(null);
   const socket = useSocket();
 
   const dispatch = useDispatch();
-  const { channels } = useSelector((state) => state.channels);
+  const { channels } = useSelector((state) => state.channelsReducers);
   const channelsNames = channels.map((c) => c.name);
 
   useEffect(() => {

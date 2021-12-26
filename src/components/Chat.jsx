@@ -1,15 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import SubmitMessage from './SubmitMessage.jsx';
 
-const Chat = ({
-  channels,
-  messages,
-  currentChannelId,
-}) => {
+const Chat = () => {
   const messagesBoxRef = useRef(null);
   const { t } = useTranslation();
+  const {
+    channelsReducers: { channels, currentChannelId },
+    messagesReducers: { messages },
+  } = useSelector((state) => state);
 
   useEffect(() => {
     if (messagesBoxRef.current) {
@@ -29,8 +30,7 @@ const Chat = ({
   ));
 
   const getCurrentChannelName = (channelId) => {
-    // !! Здесь ниже тоже проблема вылезла пришлось магическое число вводить
-    const currentChannel = channels ? channels.find((c) => c.id === channelId) : 1;
+    const currentChannel = channels.find((c) => c.id === channelId);
     return currentChannel?.name;
   };
 

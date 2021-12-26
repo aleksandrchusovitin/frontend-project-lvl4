@@ -7,6 +7,7 @@ import {
   Outlet,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import Modal from './components/modals/index.jsx';
 import { AuthProvider } from './providers';
 
 import { useAuth } from './hooks';
@@ -16,7 +17,7 @@ import {
   Page404,
   SignUp,
 } from './pages';
-import { NavBar } from './components';
+import { NavBar, Container } from './components';
 
 const PrivateRoute = () => {
   const auth = useAuth();
@@ -26,7 +27,7 @@ const PrivateRoute = () => {
 const App = () => (
   <AuthProvider>
     <Router>
-      <div className="d-flex flex-column h-100">
+      <Container>
         <NavBar />
         <Routes>
           <Route path="/" element={<PrivateRoute />}>
@@ -36,8 +37,9 @@ const App = () => (
           <Route path="/signup" element={<SignUp />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
-      </div>
+      </Container>
       <ToastContainer />
+      <Modal />
     </Router>
   </AuthProvider>
 );

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -12,6 +12,10 @@ const SubmitMessage = ({ currentChannelId }) => {
   const { t } = useTranslation();
   const auth = useAuth();
   const socket = useSocket();
+
+  useEffect(() => {
+    addMessageInputRef.current.focus();
+  });
 
   const formik = useFormik({
     initialValues: {

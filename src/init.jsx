@@ -10,11 +10,15 @@ import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 
 import App from './App.jsx';
 import { SocketProvider } from './providers';
-import reducer from './store/slices';
-import { addMessage } from './store/slices/messagesSlice.js';
-import { addChannel, removeChannel, renameChannel } from './store/slices/channelsSlice.js';
-
+import reducer, { actions } from './store/slices';
 import '../assets/application.scss';
+
+const {
+  addMessage,
+  addChannel,
+  removeChannel,
+  renameChannel,
+} = actions;
 
 export default async (instanceSocket) => {
   if (process.env.NODE_ENV !== 'production') {
