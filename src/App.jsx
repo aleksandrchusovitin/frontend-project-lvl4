@@ -7,16 +7,16 @@ import {
   Outlet,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { AuthProvider } from './providers/index.js';
+import { AuthProvider } from './providers';
 
-import { useAuth } from './hooks/index.js';
+import { useAuth } from './hooks';
 import {
   MainPage,
   Login,
   Page404,
   SignUp,
 } from './pages';
-import NavBar from './components/NavBar.jsx';
+import { NavBar } from './components';
 
 const PrivateRoute = () => {
   const auth = useAuth();

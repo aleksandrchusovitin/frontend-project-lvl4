@@ -11,10 +11,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
-import { useSocket } from '../../hooks/index.js';
+import { useSocket } from '../../hooks';
 import { closeModal } from '../../store/slices/modalSlice.js';
 import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
-import toast from '../../toast/index.js';
+import toast from '../../toast';
 
 const AddChannel = () => {
   const addInputRef = useRef(null);

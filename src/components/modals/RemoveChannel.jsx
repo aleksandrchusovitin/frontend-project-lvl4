@@ -6,10 +6,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useSocket } from '../../hooks/index.js';
+import { useSocket } from '../../hooks';
 import { closeModal } from '../../store/slices/modalSlice.js';
 import { currentChannelIdUpdated } from '../../store/slices/channelsSlice.js';
-import toast from '../../toast/index.js';
+import toast from '../../toast';
 
 const RemoveChannel = ({ channelWithAction }) => {
   const dispatch = useDispatch();

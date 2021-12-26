@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import routes from '../routes.js';
-import { useAuth } from '../hooks/index.js';
+import { useAuth } from '../hooks';
 
 import signUpLogo from '../../assets/images/signup_logo.jpg';
 

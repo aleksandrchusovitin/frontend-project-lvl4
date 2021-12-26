@@ -9,8 +9,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider as RollBarProvider, ErrorBoundary } from '@rollbar/react';
 
 import App from './App.jsx';
-import { SocketProvider } from './providers/index.js';
-import reducer from './store/slices/index.js';
+import { SocketProvider } from './providers';
+import reducer from './store/slices';
 import { addMessage } from './store/slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './store/slices/channelsSlice.js';
 
