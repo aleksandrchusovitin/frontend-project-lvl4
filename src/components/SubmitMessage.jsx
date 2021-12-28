@@ -37,9 +37,6 @@ const SubmitMessage = ({ currentChannelId }) => {
     },
   });
 
-  const ruDict = filter.getDictionary('ru');
-  filter.add(ruDict);
-
   return (
     <div className="mt-auto px-5 py-3">
       <Form className="py-1 border rounded-2" noValidate onSubmit={formik.handleSubmit}>

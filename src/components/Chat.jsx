@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import SubmitMessage from './SubmitMessage.jsx';
+import Message from './Message.jsx';
 
 const Chat = () => {
   const messagesBoxRef = useRef(null);
@@ -20,14 +21,6 @@ const Chat = () => {
 
   const messagesForCurrentChannel = messages
     .filter((m) => m.channelId === currentChannelId);
-
-  const renderMessagesList = (messagesData) => messagesData.map(({ id, text, username }) => (
-    <div key={id} className="text-break mb-2">
-      <b>{username}</b>
-      {': '}
-      {text}
-    </div>
-  ));
 
   const getCurrentChannelName = (channelId) => {
     const currentChannel = channels.find((c) => c.id === channelId);
@@ -48,7 +41,13 @@ const Chat = () => {
           <span className="text-muted">{t('mainPage.messages.message', { count: messagesForCurrentChannel.length })}</span>
         </div>
         <div ref={messagesBoxRef} id="messages-box" className="chat-messages overflow-auto px-5">
-          {renderMessagesList(messagesForCurrentChannel)}
+          {messagesForCurrentChannel.map(({ id, text, username }) => (
+            <Message
+              key={id}
+              text={text}
+              username={username}
+            />
+          ))}
         </div>
         <SubmitMessage currentChannelId={currentChannelId} />
       </div>
