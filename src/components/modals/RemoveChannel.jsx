@@ -10,21 +10,15 @@ import { useSocket } from '../../hooks';
 import { actions } from '../../store/slices';
 import toast from '../../toast';
 
-const { closeModal, currentChannelIdUpdated } = actions;
-
-const RemoveChannel = () => {
+const RemoveChannel = ({ handleClose }) => {
   const dispatch = useDispatch();
   const { channels, channelWithAction } = useSelector((state) => state.channelsReducers);
   const socket = useSocket();
 
   const { t } = useTranslation();
 
-  const handleClose = () => {
-    dispatch(closeModal());
-  };
-
   const handleDelete = async () => {
-    currentChannelIdUpdated(channels[0].id);
+    dispatch(actions.currentChannelIdUpdated(channels[0].id));
     const { id } = channelWithAction;
     try {
       await socket.removeChannel({ id });
@@ -33,11 +27,11 @@ const RemoveChannel = () => {
       toast(t('toasts.channelDeletedError'), 'error');
     }
 
-    dispatch(closeModal());
+    handleClose();
   };
 
   return (
-    <Modal show onHide={handleClose} centered>
+    <>
       <Modal.Header>
         <Modal.Title>{t('modals.removeChannel.header')}</Modal.Title>
         <button
@@ -56,7 +50,7 @@ const RemoveChannel = () => {
           <Button variant="danger" onClick={handleDelete}>{t('modals.removeChannel.buttons.remove')}</Button>
         </div>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

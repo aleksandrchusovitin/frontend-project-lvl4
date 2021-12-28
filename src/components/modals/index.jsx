@@ -1,5 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Modal as BootstrapModal } from 'react-bootstrap';
+import { actions } from '../../store/slices';
 
 import AddChannel from './AddChannel.jsx';
 import RemoveChannel from './RemoveChannel.jsx';
@@ -12,14 +14,24 @@ const modals = {
 };
 
 const Modal = () => {
-  const { isOpened } = useSelector((state) => state.modalReducers);
+  const dispatch = useDispatch();
 
-  if (isOpened === null) {
+  const handleClose = () => {
+    dispatch(actions.closeModal());
+  };
+
+  const { isOpened, modalType } = useSelector((state) => state.modalReducers);
+
+  if (modalType === null) {
     return null;
   }
-  const SelectedModal = modals[isOpened];
+  const SelectedModal = modals[modalType];
 
-  return <SelectedModal />;
+  return (
+    <BootstrapModal show={isOpened} onHide={handleClose} centered>
+      {SelectedModal && <SelectedModal handleClose={handleClose} />}
+    </BootstrapModal>
+  );
 };
 
 export default Modal;

@@ -8,23 +8,19 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { useSocket } from '../../hooks';
-import { actions } from '../../store/slices';
 import toast from '../../toast';
 
-const { closeModal } = actions;
-
-const RenameChannel = () => {
+const RenameChannel = ({ handleClose }) => {
   const { channels, channelWithAction } = useSelector((state) => state.channelsReducers);
   const { id } = channelWithAction;
   const oldChannelName = channelWithAction.name;
   const renameInputRef = useRef(null);
   const socket = useSocket();
 
-  const dispatch = useDispatch();
   const channelsNames = channels.map((c) => c.name);
 
   useEffect(() => {
@@ -33,10 +29,6 @@ const RenameChannel = () => {
   }, []);
 
   const { t } = useTranslation();
-
-  const handleClose = () => {
-    dispatch(closeModal());
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -55,12 +47,12 @@ const RenameChannel = () => {
         toast(t('toasts.channelRenamedError'), 'error');
       }
 
-      dispatch(closeModal());
+      handleClose();
     },
   });
 
   return (
-    <Modal show onHide={handleClose} centered>
+    <>
       <Modal.Header>
         <Modal.Title>{t('modals.renameChannel.header')}</Modal.Title>
         <button
@@ -98,7 +90,7 @@ const RenameChannel = () => {
           </FormGroup>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

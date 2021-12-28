@@ -15,9 +15,7 @@ import { useSocket } from '../../hooks';
 import { actions } from '../../store/slices';
 import toast from '../../toast';
 
-const { closeModal, currentChannelIdUpdated } = actions;
-
-const AddChannel = () => {
+const AddChannel = ({ handleClose }) => {
   const addInputRef = useRef(null);
   const socket = useSocket();
 
@@ -31,10 +29,6 @@ const AddChannel = () => {
 
   const { t } = useTranslation();
 
-  const handleClose = () => {
-    dispatch(closeModal());
-  };
-
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -47,7 +41,7 @@ const AddChannel = () => {
       const newChannel = { name: values.name };
       try {
         const channel = await socket.addChannel(newChannel);
-        dispatch(currentChannelIdUpdated(channel.id));
+        dispatch(actions.currentChannelIdUpdated(channel.id));
         toast(t('toasts.channelCreated'), 'success');
       } catch {
         toast(t('toasts.channelCreatedError'), 'error');
@@ -55,12 +49,12 @@ const AddChannel = () => {
 
       resetForm('');
 
-      dispatch(closeModal());
+      handleClose();
     },
   });
 
   return (
-    <Modal show onHide={handleClose} centered>
+    <>
       <Modal.Header>
         <Modal.Title>{t('modals.addChannel.header')}</Modal.Title>
         <button
@@ -98,7 +92,7 @@ const AddChannel = () => {
           </FormGroup>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 
