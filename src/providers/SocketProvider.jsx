@@ -1,25 +1,20 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { socketContext } from '../context/index.js';
 
-const promisify = (socketFunction, errorMessage) => (...args) => new Promise((resolve, reject) => {
+const promisify = (socketFunction) => (...args) => new Promise((resolve, reject) => {
   socketFunction(...args, ({ status, data }) => {
     if (status !== 'ok') {
-      reject(new Error(errorMessage));
+      reject();
     }
     resolve(data);
   });
 });
 
 const SocketProvider = ({ socket, children }) => {
-  const { t } = useTranslation();
-
-  const errorMessage = t('errors.serverConnectionLost');
-
-  const addMessage = promisify((...args) => socket.emit('newMessage', ...args), errorMessage);
-  const addChannel = promisify((...args) => socket.emit('newChannel', ...args), errorMessage);
-  const removeChannel = promisify((...args) => socket.emit('removeChannel', ...args), errorMessage);
-  const renameChannel = promisify((...args) => socket.emit('renameChannel', ...args), errorMessage);
+  const addMessage = promisify((...args) => socket.emit('newMessage', ...args));
+  const addChannel = promisify((...args) => socket.emit('newChannel', ...args));
+  const removeChannel = promisify((...args) => socket.emit('removeChannel', ...args));
+  const renameChannel = promisify((...args) => socket.emit('renameChannel', ...args));
 
   return (
     <socketContext.Provider value={{

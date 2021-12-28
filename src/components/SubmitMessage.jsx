@@ -7,6 +7,8 @@ import * as filter from 'leo-profanity';
 import { useTranslation } from 'react-i18next';
 import { useAuth, useSocket } from '../hooks';
 
+import toast from '../toast';
+
 const SubmitMessage = ({ currentChannelId }) => {
   const addMessageInputRef = useRef(null);
   const { t } = useTranslation();
@@ -31,7 +33,11 @@ const SubmitMessage = ({ currentChannelId }) => {
         text: filter.clean(values.body),
         username: userName,
       };
-      await socket.addMessage(newMessage);
+      try {
+        await socket.addMessage(newMessage);
+      } catch {
+        toast(t('toasts.messageSendingError'), 'error');
+      }
 
       resetForm('');
     },

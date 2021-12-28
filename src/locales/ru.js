@@ -34,6 +34,7 @@ export default {
       channelRenamedError: 'Не удалось переименовать канал',
       channelCreated: 'Канал создан',
       channelCreatedError: 'Не удалось создать канал',
+      messageSendingError: 'Не удалось отправить сообщение',
       connectionError: 'Ошибка соединения',
     },
     loginPage: {
