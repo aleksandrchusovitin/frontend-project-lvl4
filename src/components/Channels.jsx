@@ -1,9 +1,9 @@
 import React from 'react';
 import cn from 'classnames';
-import { Button, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
+import SplitButton from './SplitButton.jsx';
 import { actions } from '../store/slices';
 
 const {
@@ -48,51 +48,21 @@ const Channels = () => {
       );
     };
 
-    const renderSplitButton = (id, name, isCurrentChannel) => {
-      const classNameSplitButton = cn('w-100 rounded-0 text-start text-truncate', { 'btn-secondary': isCurrentChannel });
-      return (
-        <Dropdown role="group" className="d-flex btn-group">
-          <Button
-            className={classNameSplitButton}
-            variant={isCurrentChannel && 'secondary'}
-            onClick={handleChangeChannel(id)}
-          >
-            {`# ${name}`}
-          </Button>
-
-          <Dropdown.Toggle
-            split
-            variant={isCurrentChannel && 'secondary'}
-            className="flex-grow-0"
-            aria-haspopup="true"
-            aria-label={t('mainPage.buttons.extraButtonForChannel')}
-          />
-
-          <Dropdown.Menu>
-            <Dropdown.Item
-              href="#"
-              onClick={handleRemoveChannel(id, name, 'removingChannel')}
-            >
-              {t('mainPage.buttons.channelDelete')}
-            </Dropdown.Item>
-            <Dropdown.Item
-              href="#"
-              onClick={handleRenameChannel(id, name, 'renamingChannel')}
-            >
-              {t('mainPage.buttons.channelRename')}
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      );
-    };
     const items = channelsData.map(({ id, name, removable }) => {
       const isCurrentChannel = currentChannelId === id;
 
       return (
         <li key={id} className="nav-item w-100">
-          {removable
-            ? renderSplitButton(id, name, isCurrentChannel)
-            : renderGeneralButton(id, name, isCurrentChannel)}
+          {removable ? (
+            <SplitButton
+              id={id}
+              name={name}
+              isCurrentChannel={isCurrentChannel}
+              handleChangeChannel={handleChangeChannel}
+              handleRemoveChannel={handleRemoveChannel}
+              handleRenameChannel={handleRenameChannel}
+            />
+          ) : renderGeneralButton(id, name, isCurrentChannel)}
         </li>
       );
     });
