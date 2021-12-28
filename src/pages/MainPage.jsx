@@ -41,7 +41,7 @@ const MainPage = () => {
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [auth, headers, dispatch, t]);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
