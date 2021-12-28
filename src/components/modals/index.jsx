@@ -12,17 +12,14 @@ const modals = {
 };
 
 const Modal = () => {
-  const {
-    modalReducers: { isOpened },
-    channelsReducers: { channelWithAction },
-  } = useSelector((state) => state);
+  const { isOpened } = useSelector((state) => state.modalReducers);
 
   if (isOpened === null) {
     return null;
   }
   const SelectedModal = modals[isOpened];
 
-  return <SelectedModal channelWithAction={channelWithAction} />;
+  return <SelectedModal />;
 };
 
 export default Modal;

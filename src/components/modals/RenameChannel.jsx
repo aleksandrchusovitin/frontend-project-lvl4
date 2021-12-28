@@ -17,14 +17,14 @@ import toast from '../../toast';
 
 const { closeModal } = actions;
 
-const RenameChannel = ({ channelWithAction }) => {
+const RenameChannel = () => {
+  const { channels, channelWithAction } = useSelector((state) => state.channelsReducers);
   const { id } = channelWithAction;
   const oldChannelName = channelWithAction.name;
   const renameInputRef = useRef(null);
   const socket = useSocket();
 
   const dispatch = useDispatch();
-  const { channels } = useSelector((state) => state.channelsReducers);
   const channelsNames = channels.map((c) => c.name);
 
   useEffect(() => {

@@ -12,9 +12,9 @@ import toast from '../../toast';
 
 const { closeModal, currentChannelIdUpdated } = actions;
 
-const RemoveChannel = ({ channelWithAction }) => {
+const RemoveChannel = () => {
   const dispatch = useDispatch();
-  const { channels } = useSelector((state) => state.channelsReducers);
+  const { channels, channelWithAction } = useSelector((state) => state.channelsReducers);
   const socket = useSocket();
 
   const { t } = useTranslation();

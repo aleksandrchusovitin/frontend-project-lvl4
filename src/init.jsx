@@ -13,13 +13,6 @@ import { SocketProvider } from './providers';
 import reducer, { actions } from './store/slices';
 import '../assets/application.scss';
 
-const {
-  addMessage,
-  addChannel,
-  removeChannel,
-  renameChannel,
-} = actions;
-
 export default async (instanceSocket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
@@ -30,20 +23,21 @@ export default async (instanceSocket) => {
   });
 
   instanceSocket.on('newMessage', (payload) => {
-    store.dispatch(addMessage(payload));
+    store.dispatch(actions.addMessage(payload));
   });
   instanceSocket.on('newChannel', (payload) => {
-    store.dispatch(addChannel(payload));
+    store.dispatch(actions.addChannel(payload));
   });
   instanceSocket.on('removeChannel', (payload) => {
-    store.dispatch(removeChannel(payload));
+    store.dispatch(actions.removeChannel(payload));
   });
   instanceSocket.on('renameChannel', (payload) => {
-    store.dispatch(renameChannel(payload));
+    store.dispatch(actions.renameChannel(payload));
   });
 
   const rollbarConfig = {
     accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+    enabled: process.env.NODE_ENV === 'production',
     captureUncaught: true,
     captureUnhandledRejections: true,
     payload: {

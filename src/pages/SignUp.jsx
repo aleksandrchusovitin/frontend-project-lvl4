@@ -49,8 +49,7 @@ const SignUp = () => {
       setRegistrationFailed(false);
       try {
         const res = await axios.post(routes.signUpPath(), values);
-        const { data } = res;
-        auth.logIn(data);
+        auth.logIn(res.data);
 
         navigate('/');
       } catch (err) {

@@ -15,7 +15,7 @@ const {
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { channelsReducers: { channels, currentChannelId } } = useSelector((state) => state);
+  const { channels, currentChannelId } = useSelector((state) => state.channelsReducers);
 
   const handleAddChannel = (action) => () => {
     dispatch(openModal(action));
@@ -48,7 +48,7 @@ const Channels = () => {
       );
     };
 
-    const renderSplitButton = (name, id, isCurrentChannel) => {
+    const renderSplitButton = (id, name, isCurrentChannel) => {
       const classNameSplitButton = cn('w-100 rounded-0 text-start text-truncate', { 'btn-secondary': isCurrentChannel });
       return (
         <Dropdown role="group" className="d-flex btn-group">
@@ -91,7 +91,7 @@ const Channels = () => {
       return (
         <li key={id} className="nav-item w-100">
           {removable
-            ? renderSplitButton(name, id, isCurrentChannel)
+            ? renderSplitButton(id, name, isCurrentChannel)
             : renderGeneralButton(id, name, isCurrentChannel)}
         </li>
       );
