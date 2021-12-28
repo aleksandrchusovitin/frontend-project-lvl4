@@ -23,9 +23,13 @@ const MainPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // eslint-disable-next-line functional/no-let
+    let isActive = true;
     const fetchData = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers });
-      dispatch(getData(data));
+      if (isActive) {
+        dispatch(getData(data));
+      }
     };
 
     fetchData()
@@ -33,6 +37,10 @@ const MainPage = () => {
         // rollbar.error(err);
         toast(t('toasts.connectionError'), 'error');
       });
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   return (

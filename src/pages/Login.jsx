@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '../hooks';
 import routes from '../routes.js';
+import toast from '../toast';
 
 import loginLogo from '../../assets/images/login_logo.png';
 
@@ -51,6 +52,7 @@ const LoginPage = () => {
           // rollbar.error(err);
           return;
         }
+        toast(t('toasts.connectionError'), 'error');
         throw err;
       }
     },

@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import routes from '../routes.js';
 import { useAuth } from '../hooks';
+import toast from '../toast';
 
 import signUpLogo from '../../assets/images/signup_logo.jpg';
 
@@ -58,6 +59,7 @@ const SignUp = () => {
           // rollbar.error(err);
           return;
         }
+        toast(t('toasts.connectionError'), 'error');
         throw err;
       }
     },
