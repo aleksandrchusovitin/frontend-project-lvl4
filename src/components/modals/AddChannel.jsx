@@ -14,14 +14,14 @@ import * as yup from 'yup';
 import { useSocket } from '../../hooks';
 import { actions } from '../../store/slices';
 import toast from '../../toast';
+import { getChannelsNames } from '../../store/selectors.js';
 
 const AddChannel = ({ handleClose }) => {
   const addInputRef = useRef(null);
   const socket = useSocket();
 
   const dispatch = useDispatch();
-  const { channels } = useSelector((state) => state.channelsReducers);
-  const channelsNames = channels.map((c) => c.name);
+  const channelsNames = useSelector(getChannelsNames);
 
   useEffect(() => {
     addInputRef.current.focus();

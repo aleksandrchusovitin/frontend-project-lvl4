@@ -13,15 +13,15 @@ import * as yup from 'yup';
 
 import { useSocket } from '../../hooks';
 import toast from '../../toast';
+import { getChannelsNames, getPrevChannelName, getChannelWithActionId } from '../../store/selectors.js';
 
 const RenameChannel = ({ handleClose }) => {
-  const { channels, channelWithAction } = useSelector((state) => state.channelsReducers);
-  const { id } = channelWithAction;
-  const oldChannelName = channelWithAction.name;
+  const channelsNames = useSelector(getChannelsNames);
+  const prevChannelName = useSelector(getPrevChannelName);
+  const id = useSelector(getChannelWithActionId);
+
   const renameInputRef = useRef(null);
   const socket = useSocket();
-
-  const channelsNames = channels.map((c) => c.name);
 
   useEffect(() => {
     renameInputRef.current.focus();
@@ -32,7 +32,7 @@ const RenameChannel = ({ handleClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: oldChannelName,
+      name: prevChannelName,
     },
     validationSchema: yup.object().shape({
       name: yup.mixed().notOneOf(channelsNames),

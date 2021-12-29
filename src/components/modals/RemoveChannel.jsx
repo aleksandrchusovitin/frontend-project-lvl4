@@ -9,17 +9,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSocket } from '../../hooks';
 import { actions } from '../../store/slices';
 import toast from '../../toast';
+import { getChannelWithActionId } from '../../store/selectors';
 
 const RemoveChannel = ({ handleClose }) => {
   const dispatch = useDispatch();
-  const { channels, channelWithAction } = useSelector((state) => state.channelsReducers);
+  const { channels } = useSelector((state) => state.channelsReducers);
+  const id = useSelector(getChannelWithActionId);
   const socket = useSocket();
 
   const { t } = useTranslation();
 
   const handleDelete = async () => {
     dispatch(actions.currentChannelIdUpdated(channels[0].id));
-    const { id } = channelWithAction;
     try {
       await socket.removeChannel({ id });
       toast(t('toasts.channelDeleted'), 'success');

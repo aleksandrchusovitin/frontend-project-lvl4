@@ -4,13 +4,14 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import * as filter from 'leo-profanity';
 import { useRollbar } from '@rollbar/react';
-
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useAuth, useSocket } from '../hooks';
 
 import toast from '../toast';
+import { getCurrentChannelId } from '../store/selectors.js';
 
-const SubmitMessage = ({ currentChannelId }) => {
+const SubmitMessage = () => {
   const addMessageInputRef = useRef(null);
   const { t } = useTranslation();
   const auth = useAuth();
@@ -20,6 +21,8 @@ const SubmitMessage = ({ currentChannelId }) => {
   useEffect(() => {
     addMessageInputRef.current.focus();
   });
+
+  const currentChannelId = useSelector(getCurrentChannelId);
 
   const formik = useFormik({
     initialValues: {

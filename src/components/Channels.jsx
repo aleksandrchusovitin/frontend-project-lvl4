@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import SplitButton from './SplitButton.jsx';
 import { actions } from '../store/slices';
+import { getChannels, getCurrentChannelId } from '../store/selectors.js';
 
 const {
   openModal,
@@ -15,7 +16,8 @@ const {
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { channels, currentChannelId } = useSelector((state) => state.channelsReducers);
+  const channels = useSelector(getChannels);
+  const currentChannelId = useSelector(getCurrentChannelId);
 
   const handleAddChannel = (action) => () => {
     dispatch(openModal(action));
