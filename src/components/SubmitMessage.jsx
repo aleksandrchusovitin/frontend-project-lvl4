@@ -3,6 +3,7 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import * as filter from 'leo-profanity';
+import { useRollbar } from '@rollbar/react';
 
 import { useTranslation } from 'react-i18next';
 import { useAuth, useSocket } from '../hooks';
@@ -14,6 +15,7 @@ const SubmitMessage = ({ currentChannelId }) => {
   const { t } = useTranslation();
   const auth = useAuth();
   const socket = useSocket();
+  const rollbar = useRollbar();
 
   useEffect(() => {
     addMessageInputRef.current.focus();
@@ -35,8 +37,9 @@ const SubmitMessage = ({ currentChannelId }) => {
       };
       try {
         await socket.addMessage(newMessage);
-      } catch {
+      } catch (err) {
         toast(t('toasts.messageSendingError'), 'error');
+        rollbar.error(err);
       }
 
       resetForm('');
