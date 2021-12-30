@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-// import { useRollbar } from '@rollbar/react/lib';
+import { useRollbar } from '@rollbar/react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ const MainPage = () => {
 
   const headers = auth.getAuthHeader();
   const { t } = useTranslation();
-  // const rollbar = useRollbar();
+  const rollbar = useRollbar();
 
   const dispatch = useDispatch();
 
@@ -33,8 +33,8 @@ const MainPage = () => {
     };
 
     fetchData()
-      .catch(() => {
-        // rollbar.error(err);
+      .catch((err) => {
+        rollbar.error(err);
         toast(t('toasts.connectionError'), 'error');
       });
 
